@@ -6,8 +6,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Bursa Hub',
-    titleTemplate: '%s - Bursa Hub',
+    title: 'InvestHub',
+    titleTemplate: '%s - InvestHub',
     htmlAttrs: {
       lang: 'en',
     },

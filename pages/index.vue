@@ -2,7 +2,7 @@
   <div
     class="bg-gradient-to-r from-indigo-600 to-purple-500 px-7 py-4 text-white"
   >
-    <div class="text-3xl font-bold">Bursa Hub</div>
+    <div class="text-3xl font-bold">InvestHub</div>
     <div class="grid grid-cols-2 divide-x divide-white-8">
       <div class="text-xl">
         For Investor, you can find idea at here to invest stock
