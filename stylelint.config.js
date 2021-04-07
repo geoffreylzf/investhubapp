@@ -9,6 +9,7 @@ module.exports = {
         ignoreAtRules: [
           'tailwind',
           'apply',
+          'layer',
           'variants',
           'responsive',
           'screen',
