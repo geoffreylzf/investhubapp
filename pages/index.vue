@@ -1,7 +1,14 @@
 <template>
   <div>
     <div
-      class="bg-gradient-to-r from-indigo-500 to-purple-500 px-8 pb-4 text-white"
+      class="
+        bg-gradient-to-r
+        from-indigo-600
+        to-purple-500
+        px-8
+        pb-4
+        text-white
+      "
     >
       <div class="grid grid-cols-2 divide-x divide-white-8">
         <div>
@@ -9,7 +16,7 @@
             For Investor, you can find idea at here to invest stock
           </div>
           <div class="inline-flex space-x-2">
-            <TButton>
+            <TButton to="/articles">
               <template #icon>
                 <ArticleSvg />
               </template>

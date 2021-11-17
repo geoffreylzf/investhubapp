@@ -48,10 +48,6 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
-  tailwindcss: {
-    jit: true,
-  },
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }

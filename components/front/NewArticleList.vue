@@ -4,7 +4,14 @@
       <thead class="bg-gray-50">
         <tr>
           <th
-            class="px-8 py-2 text-xs text-left font-medium text-gray-500 uppercase"
+            class="
+              px-8
+              py-2
+              text-xs text-left
+              font-medium
+              text-gray-500
+              uppercase
+            "
           >
             Title
           </th>
