@@ -1,33 +1,20 @@
 <template>
-  <div class="mt-4 flex">
-    <div class="flex-none w-1/6 h-16"></div>
-    <div class="flex-grow h-16">
-      <p
-        class="
-          inline-block
-          text-3xl
-          font-extrabold
-          text-gray-900
-          tracking-tight
-        "
-      >
-        List of Articles
-      </p>
-      <div>
-        <input
-          placeholder="Search..."
-          class="
-            w-full
-            p-2
-            border-b-2 border-gray-600
-            outline-none
-            focus:border-indigo-800
-          "
-        />
-      </div>
-    </div>
-    <div class="flex-none w-1/6 h-16"></div>
-  </div>
+  <a-row class="container">
+    <a-col :xs="0" :sm="4"> Advertisement</a-col>
+    <a-col :xs="24" :sm="16" class="content">
+      <p class="title">List of Articles</p>
+      <a-input placeholder="Search..." class="search" />
+
+      <a-list bordered :data-source="articles">
+        <a-list-item slot="renderItem" slot-scope="art">
+          <nuxt-link :to="'articles/' + art.id">
+            {{ art.title }}
+          </nuxt-link>
+        </a-list-item>
+      </a-list>
+    </a-col>
+    <a-col :xs="0" :sm="4"> Advertisement </a-col>
+  </a-row>
 </template>
 
 <script>
@@ -52,3 +39,21 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.container {
+  padding: 16px;
+}
+
+.content {
+  padding: 0 16px;
+}
+
+.title {
+  letter-spacing: 2px;
+  font-size: 24px;
+  font-weight: bolder;
+}
+.search {
+  margin-bottom: 12px;
+}
+</style>

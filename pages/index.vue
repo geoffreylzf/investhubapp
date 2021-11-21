@@ -1,68 +1,65 @@
 <template>
   <div>
-    <div
-      class="
-        bg-gradient-to-r
-        from-indigo-600
-        to-purple-500
-        px-8
-        pb-4
-        text-white
-      "
-    >
-      <div class="grid grid-cols-2 divide-x divide-white-8">
-        <div>
-          <div class="text-xl mb-4">
+    <div class="header">
+      <a-row>
+        <a-col :xs="24" :sm="12">
+          <div class="left-title">
             For Investor, you can find idea at here to invest stock
           </div>
-          <div class="inline-flex space-x-2">
-            <TButton to="/articles">
-              <template #icon>
-                <ArticleSvg />
-              </template>
-              View All Articles
-            </TButton>
-            <TButton>
-              <template #icon>
-                <StockSvg />
-              </template>
-              Find Stock
-            </TButton>
+          <div>
+            <nuxt-link to="/articles">
+              <a-button icon="file-text"> View All Articles </a-button>
+            </nuxt-link>
+            <nuxt-link to="/stocks">
+              <a-button icon="bar-chart"> Find Stock </a-button>
+            </nuxt-link>
           </div>
-        </div>
-        <div class="text-right">
-          <div class="font-bold">
-            For author, you can share your idea on how to invest stock
+        </a-col>
+        <a-col :xs="24" :sm="12">
+          <div class="text-right">
+            <div class="right-title">
+              For author, you can share your idea on how to invest stock
+            </div>
+            <div class="right-sub-title">
+              You might get tips from sharing your idea
+            </div>
+            <a-button type="primary" to="/profile/register-author" icon="form">
+              Become Author
+            </a-button>
           </div>
-          <div class="text-xs">You might get tips from sharing your idea</div>
-          <div class="h-4"></div>
-          <TButton bg-color="bg-gray-900" hover-bg-color="hover:bg-gray-700">
-            <template #icon>
-              <AuthorSvg />
-            </template>
-            Become Author
-          </TButton>
-        </div>
-      </div>
+        </a-col>
+      </a-row>
     </div>
-    <div class="px-8 py-4">
-      <div
-        class="grid grid-cols-1 grid-cols-3 gap-4 md:grid-cols-2 lg:grid-cols-3"
-      >
+    <div class="">
+      <div class="">
         <FrontNewArticleList />
-        <div class="h-8 bg-green-500"></div>
-        <div class="h-8 bg-blue-500"></div>
+        <div class=""></div>
+        <div class=""></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  components: {
-    ArticleSvg: () => import('~/assets/svg/article.svg?inline'),
-    StockSvg: () => import('~/assets/svg/stock.svg?inline'),
-    AuthorSvg: () => import('~/assets/svg/author.svg?inline'),
-  },
-}
+export default {}
 </script>
+<style lang="less" scoped>
+.header {
+  background-image: linear-gradient(to right, #5c6bc0, #ab47bc);
+  padding: 16px;
+  color: whitesmoke;
+}
+.left-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.right-title {
+  font-size: 24px;
+}
+.right-sub-title {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+</style>

@@ -1,24 +1,15 @@
 <template>
-  <div>
-    <div
-      class="
-        bg-gradient-to-r
-        from-indigo-600
-        to-purple-500
-        px-6
-        py-2
-        text-white
-      "
-    >
+  <a-layout>
+    <a-layout-header theme="light">
       <NuxtLink to="/">
-        <div class="inline-flex space-x-2 items-center">
-          <LogoSvg class="h-4 w-4" />
-          <span class="text-base font-medium">InvestHub</span>
-        </div>
+        <LogoSvg class="icon" />
+        <span class="title">InvestHub</span>
       </NuxtLink>
-    </div>
-    <Nuxt />
-  </div>
+    </a-layout-header>
+    <a-layout-content>
+      <Nuxt />
+    </a-layout-content>
+  </a-layout>
 </template>
 <script>
 export default {
@@ -27,3 +18,24 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.ant-layout-header {
+  height: 48px;
+  line-height: 48px;
+  padding: 0 24px;
+  background-image: linear-gradient(to right, #5c6bc0, #ab47bc);
+}
+.ant-layout-content {
+  background: white;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 16px;
+}
+.title {
+  font-size: 20px;
+  color: whitesmoke;
+  font-weight: 600;
+}
+</style>

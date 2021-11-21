@@ -1,45 +1,52 @@
 <template>
-  <div class="mt-4 flex">
-    <div class="flex-none w-96 h-16"></div>
-    <div class="flex-grow h-16">
-      <p
-        class="
-          inline-block
-          text-3xl
-          font-extrabold
-          text-gray-900
-          tracking-tight
-        "
-      >
+  <a-row class="container">
+    <a-col :xs="0" :sm="4"> Advertisement</a-col>
+    <a-col :xs="24" :sm="12" class="content">
+      <div class="title">
         {{ data.title }}
-      </p>
-      <div v-for="p in data.paragraphs" :key="p.id" class="mt-8">
+      </div>
+      <div v-for="p in data.paragraphs" :key="p.id" class="paragraph">
         {{ p.content }}
       </div>
-    </div>
-    <div class="flex-none w-96">
-      <div class="flex flex-col items-center mx-8 p-8 border-2 rounded-lg">
-        <div class="h-10 w-10">
-          <img
-            class="h-10 w-10 rounded-full"
-            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60"
-            alt=""
-          />
-        </div>
-        <p class="mt-4">{{ data.author.name }}</p>
-        <p class="mt-4 text-sm">{{ data.author.bio }}</p>
-
-        <div class="mt-4 w-full text-xs">
-          Other Articles by this author:
-          <div v-for="oa in otherArticles" :key="oa.id">
-            <nuxt-link :to="'/articles/' + oa.id">
-              <a class="text-blue-700 hover:text-green-700"> {{ oa.title }}</a>
-            </nuxt-link>
+      <a-divider />
+      Support this article by:
+      <br />
+      <a-button type="primary"> Paypal </a-button>
+      <a-divider />
+      <div class="comment-title">Comments</div>
+      <a-textarea class="comment-textarea" placeholder="Enter comment">
+        ></a-textarea
+      >
+      <div v-for="cmt in comments" :key="cmt.id">
+        <div class="comment-user-name">{{ cmt.user_firstname }}</div>
+        <div class="comment-user-content">{{ cmt.comment }}</div>
+      </div>
+    </a-col>
+    <a-col :xs="24" :sm="4" class="author-profile">
+      <nuxt-link :to="'/authors/' + data.author.id">
+        <a-card hoverable>
+          <div class="text-center">
+            <a-avatar
+              :size="64"
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60"
+            />
+            <div class="author-name">{{ data.author.name }}</div>
+            <div class="author-bio">{{ data.author.bio }}</div>
           </div>
+        </a-card>
+      </nuxt-link>
+      <br />
+      <div class="author-other-articles">
+        Other Articles by this author:
+        <div v-for="oa in otherArticles" :key="oa.id">
+          <nuxt-link :to="'/articles/' + oa.id">
+            <a> {{ oa.title }}</a>
+          </nuxt-link>
         </div>
       </div>
-    </div>
-  </div>
+    </a-col>
+    <a-col :xs="0" :sm="4"> Advertisement</a-col>
+  </a-row>
 </template>
 
 <script>
@@ -50,6 +57,7 @@ export default {
         id: 1,
         title: 'Kpower 的浅层分析',
         author: {
+          id: 1,
           name: '和狼瓜子',
           bio: '我坚信勤奋工作和无私的分享是提升个人灵性的基础，凭着利他的心，我把我所做的功课都分享出来，这就是此部落格的使命和意义',
         },
@@ -86,6 +94,20 @@ export default {
           title: 'kesm 科技线图呈现头肩顶吗？',
         },
       ],
+      comments: [
+        {
+          id: 1,
+          user: 1,
+          user_firstname: 'Jack',
+          comment: 'very good',
+        },
+        {
+          id: 2,
+          user_firstname: 'Nathan',
+
+          comment: 'very nice',
+        },
+      ],
     }
   },
   head() {
@@ -95,3 +117,55 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.container {
+  padding: 16px;
+}
+
+.content {
+  padding: 0 16px;
+}
+.title {
+  letter-spacing: 2px;
+  font-size: 24px;
+  font-weight: bolder;
+  margin-bottom: 24px;
+}
+
+.paragraph {
+  margin-bottom: 24px;
+}
+
+.comment-title {
+  font-weight: bold;
+}
+
+.comment-textarea {
+  margin-bottom: 12px;
+}
+.comment-user-name {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.comment-user-content {
+  margin-bottom: 8px;
+}
+
+.author-profile {
+  padding-right: 16px;
+}
+.author-name {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.author-bio {
+  font-size: 12px;
+}
+.author-other-articles {
+  padding: 0 16px;
+}
+</style>
