@@ -1,10 +1,23 @@
 <template>
   <a-layout>
     <a-layout-header theme="light">
-      <NuxtLink to="/">
-        <LogoSvg class="icon" />
-        <span class="title">InvestHub</span>
-      </NuxtLink>
+      <a-row>
+        <a-col :span="12">
+          <NuxtLink to="/">
+            <LogoSvg class="logo" />
+            <span class="title">InvestHub</span>
+          </NuxtLink>
+        </a-col>
+        <a-col :span="12" class="header-right">
+          <a-icon v-if="isAuthenticated" type="user" class="icon" />
+          <a-icon
+            v-if="!isAuthenticated"
+            type="login"
+            class="icon"
+            @click="toLoginPage()"
+          />
+        </a-col>
+      </a-row>
     </a-layout-header>
     <a-layout-content>
       <Nuxt />
@@ -12,9 +25,18 @@
   </a-layout>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   components: {
     LogoSvg: () => import('~/assets/svg/logo.svg?inline'),
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser']),
+  },
+  methods: {
+    toLoginPage() {
+      this.$router.push('/login')
+    },
   },
 }
 </script>
@@ -28,7 +50,13 @@ export default {
 .ant-layout-content {
   background: white;
 }
-.icon {
+.header-right {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.logo {
   width: 20px;
   height: 20px;
   margin-right: 16px;
@@ -37,5 +65,10 @@ export default {
   font-size: 20px;
   color: whitesmoke;
   font-weight: 600;
+}
+.icon {
+  margin-left: 24px;
+  font-size: 24px;
+  color: white;
 }
 </style>
