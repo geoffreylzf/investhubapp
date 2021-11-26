@@ -8,19 +8,19 @@
         <a-form-item>
           <a-input
             v-decorator="[
-              'username',
+              'email',
               {
-                rules: [{ required: true, message: 'Please enter username' }],
+                rules: [{ required: true, message: 'Please enter email' }],
               },
             ]"
             size="large"
-            type="text"
-            placeholder="Username"
+            type="email"
+            placeholder="Email"
           >
             <a-icon
               slot="prefix"
               :style="{ color: 'rgba(0,0,0,.25)' }"
-              type="user"
+              type="mail"
             />
           </a-input>
         </a-form-item>
@@ -80,9 +80,37 @@ export default {
     handleSubmit(e) {
       this.form.validateFields((e, v) => {
         if (!e) {
-          // this.login(v)
+          this.login(v)
         }
       })
+    },
+    login(v) {
+      this.isLoading = true
+      setTimeout(() => {
+        this.$auth
+          .loginWith('local', {
+            data: v,
+          })
+          .then((r) => {
+            this.$notification.success({
+              message: 'Welcome Back',
+            })
+          })
+          .catch((e) => {
+            let message = e.toString()
+            if (e.response) {
+              if (e.response.data) {
+                message = e.response.data.detail
+              } else {
+                message = e.response.data
+              }
+            }
+            this.$message.error(message)
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
+      }, 500)
     },
   },
 }

@@ -9,7 +9,14 @@
           </NuxtLink>
         </a-col>
         <a-col :span="12" class="header-right">
-          <a-icon v-if="isAuthenticated" type="user" class="icon" />
+          <a-dropdown v-if="isAuthenticated">
+            <a-icon type="user" class="icon" />
+            <a-menu slot="overlay" style="width: 100px">
+              <a-menu-item @click="toProfile()"> Profile </a-menu-item>
+              <a-menu-item @click="onLogout()"> Logout </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+
           <a-icon
             v-if="!isAuthenticated"
             type="login"
@@ -46,6 +53,20 @@ export default {
     toLoginPage() {
       this.$router.push('/login')
     },
+    toProfile() {
+      this.$router.push('/profile')
+    },
+    onLogout() {
+      this.$confirm({
+        title: 'Logout?',
+        content: 'Confirm to logout?',
+        okText: 'Logout',
+        onOk: () => {
+          this.$auth.logout()
+        },
+        onCancel() {},
+      })
+    },
   },
 }
 </script>
@@ -80,6 +101,7 @@ export default {
   margin-left: 24px;
   font-size: 24px;
   color: white;
+  cursor: pointer;
 }
 .ant-layout-footer {
   line-height: 36px;

@@ -44,6 +44,35 @@ export default {
     baseURL: process.env.API_URL || undefined,
   },
 
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/auth/login/',
+            method: 'post',
+            propertyName: 'access',
+          },
+          user: {
+            url: '/api/user/profile/',
+            method: 'get',
+            propertyName: 'profile',
+          },
+          logout: false,
+        },
+      },
+    },
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      home: '/',
+    },
+  },
+  router: {
+    middleware: ['auth'],
+  },
+
   build: {
     extend(config, ctx) {
       ctx.loaders.less.javascriptEnabled = true
