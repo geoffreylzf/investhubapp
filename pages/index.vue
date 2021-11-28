@@ -43,6 +43,11 @@
 <script>
 export default {
   auth: false,
+  head() {
+    return {
+      title: 'Home',
+    }
+  },
 }
 </script>
 <style lang="less" scoped>

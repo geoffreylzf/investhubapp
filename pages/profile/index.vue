@@ -2,7 +2,7 @@
   <a-row class="container">
     <a-col :xs="0" :lg="4" />
     <a-col :xs="24" :md="12" :lg="8">
-      <h1>Profile</h1>
+      <h1>Your Profile</h1>
       <a-form :form="form">
         <a-form-item label="Email">
           {{ profile.email }}
@@ -80,7 +80,7 @@ export default {
   },
   head() {
     return {
-      title: 'Profile',
+      title: 'Your Profile',
     }
   },
   mounted() {
@@ -108,9 +108,6 @@ export default {
           })
           .catch((e) => {
             this.$responseError(e.response)
-          })
-          .finally(() => {
-            this.isSaving = false
           })
       }
     },
