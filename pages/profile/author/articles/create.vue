@@ -130,7 +130,7 @@ export default {
       }
 
       this.$axios
-        .post('/api/user/profile/author/articles//', this.article)
+        .post('/api/user/profile/author/articles/', this.article)
         .then((r) => {
           this.$message.success('Create success')
           this.$router.push(`/profile/author/articles/${r.data.id}`)
