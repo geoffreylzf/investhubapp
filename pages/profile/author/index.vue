@@ -53,6 +53,11 @@
     </a-col>
     <a-col :xs="24" :sm="8" class="content-right">
       <h2>Your Latest Article</h2>
+      <nuxt-link to="/profile/author/articles">
+        <a-button icon="container">View All Your Articles</a-button>
+      </nuxt-link>
+      <br />
+      <br />
       <h2>Your Total Donation</h2>
     </a-col>
     <a-col :xs="0" :sm="4"></a-col>
