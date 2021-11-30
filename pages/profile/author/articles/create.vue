@@ -8,6 +8,8 @@
       </nuxt-link>
       <br />
       <br />
+      {{ topicList }}
+      {{ stockCounterList }}
       <UserAuthorArticleForm ref="form" mode="create" />
       <br />
       <br />
@@ -21,6 +23,23 @@
 
 <script>
 export default {
+  async asyncData({ $axios }) {
+    const topicList = (
+      await $axios.get('/api/topics/', {
+        params: { select: {} },
+      })
+    ).data
+
+    const stockCounterList = (
+      await $axios.get('/api/stock/counters/', {
+        params: { select: {} },
+      })
+    ).data
+    return {
+      topicList,
+      stockCounterList,
+    }
+  },
   head() {
     return {
       title: 'Create New Article',
