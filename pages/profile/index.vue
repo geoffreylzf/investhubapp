@@ -4,9 +4,12 @@
     <a-col :xs="24" :md="12" :lg="8">
       <h1>Your Profile</h1>
       <a-form :form="form">
-        <a-form-item label="Email">
-          {{ profile.email }}
-        </a-form-item>
+        <a-form-item :label="`Email : ${profile.email}`" :colon="false" />
+        <UserProfileImgUploader
+          :user-img="profile.user_img"
+          :user-img-path="profile.user_img_path"
+          @uploadUserImg="handleUploadedImg"
+        />
         <a-form-item label="First Name">
           <a-input
             v-decorator="[
@@ -91,6 +94,11 @@ export default {
     this.isDirty = false
   },
   methods: {
+    handleUploadedImg(imgData) {
+      this.profile.user_img = imgData.id
+      this.profile.user_img_path = imgData.path
+      this.isDirty = true
+    },
     saveProfile() {
       let pf = null
       this.form.validateFields((e, v) => {
@@ -100,6 +108,7 @@ export default {
       })
 
       if (pf) {
+        pf.user_img = this.profile.user_img
         this.$axios
           .put(`/api/user/profile/`, pf)
           .then((r) => {

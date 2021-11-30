@@ -3,14 +3,14 @@
     <a-col :xs="0" :sm="4" />
     <a-col :xs="24" :sm="12" class="content">
       <h1>
-        {{ data.article_title }}
-        <a-tag v-if="data.is_publish" color="green"> Publish </a-tag>
+        {{ article.article_title }}
+        <a-tag v-if="article.is_publish" color="green"> Publish </a-tag>
         <a-tag v-else color="red"> Not Yet Publish </a-tag>
       </h1>
       <p>
-        <i>Created at {{ data.created_at }}</i>
+        <i>Created at {{ article.created_at }}</i>
         &nbsp;
-        <i>Last updated at {{ data.created_at }}</i>
+        <i>Last updated at {{ article.updated_at }}</i>
       </p>
       <a-button-group>
         <nuxt-link to="/profile/author/articles">
@@ -22,12 +22,22 @@
       </a-button-group>
       <br />
       <br />
-      <div v-for="(para, i) in data.paragraphs" :key="i" class="paragraph">
-        {{ para.content }}
+      <div
+        v-for="(para, i) in article.paragraphs"
+        :key="i"
+        class="paragraph"
+        :class="{
+          'supporter-view': para.is_supporter_view_only,
+          'public-view': !para.is_supporter_view_only,
+        }"
+      >
+        <pre v-if="para.type === 'text'">{{ para.content }}</pre>
+        <img v-else-if="para.type === 'image'" :src="para.article_img_path" />
       </div>
     </a-col>
     <a-col :xs="24" :sm="4" class="status">
       <a-statistic title="View Count" :value="0" />
+      <a-statistic title="Comment Count" :value="0" />
       <a-statistic title="Donate Count" :value="0" />
       <a-statistic title="Donate Amount" :precision="2" :value="0" />
     </a-col>
@@ -39,16 +49,17 @@
 export default {
   async asyncData({ params, $axios }) {
     const id = parseInt(params.id)
-    const data = (await $axios.get(`/api/user/profile/author/articles/${id}`))
-      .data
+    const article = (
+      await $axios.get(`/api/user/profile/author/articles/${id}`)
+    ).data
     return {
       id,
-      data,
+      article,
     }
   },
   head() {
     return {
-      title: 'View ' + this.data.article_title,
+      title: 'View ' + this.article.article_title,
     }
   },
 }
@@ -58,11 +69,31 @@ export default {
 .container {
   padding: 16px;
   .status {
-    margin-left: 16px;
+    margin: 16px;
   }
 
   .paragraph {
     margin-bottom: 16px;
+    padding-left: 4px;
+
+    &.supporter-view {
+      border-left: 4px darkseagreen solid;
+    }
+
+    &.public-view {
+      border-left: 4px white solid;
+    }
+
+    pre {
+      font-family: 'Roboto', 'Open Sans', sans-serif;
+      white-space: pre-line;
+    }
+
+    img {
+      object-fit: contain;
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 }
 </style>
