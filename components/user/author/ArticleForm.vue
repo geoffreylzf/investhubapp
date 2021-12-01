@@ -60,6 +60,42 @@
       </a-button>
       <a-button icon="file-image" @click="addImage()"> Add Picture </a-button>
     </a-button-group>
+    <br />
+    <br />
+    <a-select
+      v-model="selectedTopicList"
+      mode="multiple"
+      style="width: 100%"
+      placeholder="Topic"
+      option-filter-prop="label"
+    >
+      <a-select-option
+        v-for="t in topicList"
+        :key="t.id"
+        :value="t.id"
+        :label="t.topic_name"
+      >
+        {{ t.topic_name }}
+      </a-select-option>
+    </a-select>
+    <br />
+    <br />
+    <a-select
+      v-model="selectedStockCounterList"
+      mode="multiple"
+      style="width: 100%"
+      placeholder="Stock"
+      option-filter-prop="label"
+    >
+      <a-select-option
+        v-for="sc in stockCounterList"
+        :key="sc.id"
+        :value="sc.id"
+        :label="sc.stock_symbol"
+      >
+        {{ sc.stock_symbol }}
+      </a-select-option>
+    </a-select>
   </div>
 </template>
 
@@ -74,6 +110,14 @@ export default {
     data: {
       type: Object,
       default: null,
+    },
+    topicList: {
+      type: Array,
+      default: () => [],
+    },
+    stockCounterList: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -91,14 +135,25 @@ export default {
           article_img_path: null,
         },
       ],
+      topics: [],
+      stock_counters: [],
     }
+
+    let selectedTopicList = []
+    let selectedStockCounterList = []
 
     if (this.mode === 'update' && this.data) {
       article = _.cloneDeep(this.data)
+      selectedTopicList = article.topics.map((x) => x.topic)
+      selectedStockCounterList = article.stock_counters.map(
+        (x) => x.stock_counter
+      )
     }
 
     return {
       article,
+      selectedTopicList,
+      selectedStockCounterList,
     }
   },
   methods: {
@@ -153,6 +208,43 @@ export default {
         })
         return
       }
+
+      const tempTopicList = []
+      this.selectedTopicList.forEach((x) => {
+        const exist = this.data
+          ? this.data.topics.find((y) => y.topic === x)
+          : null
+        if (exist) {
+          tempTopicList.push({
+            id: exist.id,
+            topic: x,
+          })
+        } else {
+          tempTopicList.push({
+            topic: x,
+          })
+        }
+      })
+
+      const tempStockCounterList = []
+      this.selectedStockCounterList.forEach((x) => {
+        const exist = this.data
+          ? this.data.stock_counters.find((y) => y.stock_counter === x)
+          : null
+        if (exist) {
+          tempStockCounterList.push({
+            id: exist.id,
+            stock_counter: x,
+          })
+        } else {
+          tempStockCounterList.push({
+            stock_counter: x,
+          })
+        }
+      })
+
+      this.article.topics = tempTopicList
+      this.article.stock_counters = tempStockCounterList
 
       return this.article
     },

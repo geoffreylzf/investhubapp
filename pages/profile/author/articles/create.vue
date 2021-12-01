@@ -8,9 +8,12 @@
       </nuxt-link>
       <br />
       <br />
-      {{ topicList }}
-      {{ stockCounterList }}
-      <UserAuthorArticleForm ref="form" mode="create" />
+      <UserAuthorArticleForm
+        ref="form"
+        mode="create"
+        :topic-list="topicList"
+        :stock-counter-list="stockCounterList"
+      />
       <br />
       <br />
       <a-button block type="primary" icon="save" @click="createArticle()">

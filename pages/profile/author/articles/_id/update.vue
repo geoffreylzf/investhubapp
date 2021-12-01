@@ -13,8 +13,13 @@
       </a-button-group>
       <br />
       <br />
-
-      <UserAuthorArticleForm ref="form" mode="update" :data="article" />
+      <UserAuthorArticleForm
+        ref="form"
+        mode="update"
+        :topic-list="topicList"
+        :stock-counter-list="stockCounterList"
+        :data="article"
+      />
       <br />
       <br />
       <a-button block type="primary" icon="save" @click="updateArticle()">
@@ -32,9 +37,23 @@ export default {
     const article = (
       await $axios.get(`/api/user/profile/author/articles/${id}`)
     ).data
+
+    const topicList = (
+      await $axios.get('/api/topics/', {
+        params: { select: {} },
+      })
+    ).data
+
+    const stockCounterList = (
+      await $axios.get('/api/stock/counters/', {
+        params: { select: {} },
+      })
+    ).data
     return {
       id,
       article,
+      topicList,
+      stockCounterList,
     }
   },
   head() {
