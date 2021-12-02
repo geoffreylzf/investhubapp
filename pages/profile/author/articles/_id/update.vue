@@ -46,7 +46,10 @@ export default {
 
     const stockCounterList = (
       await $axios.get('/api/stock/counters/', {
-        params: { select: {} },
+        params: {
+          select: {},
+          fields: ['id', 'stock_symbol'],
+        },
       })
     ).data
     return {
