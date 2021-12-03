@@ -86,9 +86,15 @@
       style="width: 100%"
       placeholder="Stock"
       option-filter-prop="label"
+      :filter-option="false"
+      show-search
+      @search="fetchStockCounter"
     >
+      <template v-if="stockCounter.isFetching" #notFoundContent>
+        <a-spin size="small" />
+      </template>
       <a-select-option
-        v-for="sc in stockCounterList"
+        v-for="sc in stockCounter.list"
         :key="sc.id"
         :value="sc.id"
         :label="sc.stock_symbol"
@@ -115,10 +121,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    stockCounterList: {
-      type: Array,
-      default: () => [],
-    },
   },
   data() {
     let article = {
@@ -142,21 +144,53 @@ export default {
     let selectedTopicList = []
     let selectedStockCounterList = []
 
+    let scList = []
+
     if (this.mode === 'update' && this.data) {
       article = _.cloneDeep(this.data)
       selectedTopicList = article.topics.map((x) => x.topic)
       selectedStockCounterList = article.stock_counters.map(
         (x) => x.stock_counter
       )
+      scList = article.stock_counters.map((x) => {
+        return { id: x.stock_counter, stock_symbol: x.stock_symbol }
+      })
     }
 
     return {
       article,
       selectedTopicList,
       selectedStockCounterList,
+
+      stockCounter: {
+        list: scList,
+        isFetching: false,
+      },
     }
   },
   methods: {
+    fetchStockCounter: _.debounce(async function (value) {
+      this.stockCounter.isFetching = true
+      this.stockCounter.list = []
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      this.stockCounter.list = (
+        await this.$axios.get('/api/stock/counters/', {
+          params: {
+            sorter: {
+              field: 'stock_symbol',
+              order: 'asc',
+            },
+            select: {
+              fields: ['stock_symbol'],
+              value,
+              size: 20,
+            },
+            fields: ['id', 'stock_symbol'],
+          },
+        })
+      ).data
+      this.stockCounter.isFetching = false
+    }, 500),
     deleteParagraph(para, i) {
       this.$confirm({
         title: `Confirm to delete paragraph ${para.order} ?`,
