@@ -16,6 +16,7 @@
                 rules: [{ required: true, message: 'Please enter bio' }],
               },
             ]"
+            auto-size
             :max-length="500"
           />
         </a-form-item>

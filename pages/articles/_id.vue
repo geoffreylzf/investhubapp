@@ -17,7 +17,7 @@
       <a-textarea class="comment-textarea" placeholder="Enter comment">
         ></a-textarea
       >
-      <div v-for="cmt in comments" :key="cmt.id">
+      <div v-for="cmt in comments" :key="'c_' + cmt.id">
         <div class="comment-user-name">{{ cmt.user_firstname }}</div>
         <div class="comment-user-content">{{ cmt.comment }}</div>
       </div>
