@@ -47,11 +47,13 @@
       <br />
       <div class="author-other-articles">
         Other Articles by this author:
-        <div v-for="oa in otherArticles" :key="oa.id">
+        <div v-for="(oa, idx) in otherNewArticles" :key="oa.id" class="mb-8">
+          {{ idx + 1 }}.
           <nuxt-link :to="'/articles/' + oa.id">
-            {{ oa.title }}
+            {{ oa.article_title }}
           </nuxt-link>
         </div>
+        <a-skeleton active :loading="isFetchingOtherNewArticles" />
       </div>
     </a-col>
     <a-col :xs="0" :sm="4"> Advertisement</a-col>
@@ -71,20 +73,8 @@ export default {
   },
   data() {
     return {
-      otherArticles: [
-        {
-          id: 11,
-          title: '隐藏的盈利，隐藏的投资高手！',
-        },
-        {
-          id: 12,
-          title: 'JOHOTIN 值得长期投资吗？',
-        },
-        {
-          id: 13,
-          title: 'kesm 科技线图呈现头肩顶吗？',
-        },
-      ],
+      otherNewArticles: [],
+      isFetchingOtherNewArticles: true,
       comments: [
         {
           id: 1,
@@ -103,8 +93,22 @@ export default {
   },
   head() {
     return {
-      title: 'Kpower 的浅层分析',
+      title: this.article.article_title,
     }
+  },
+  async mounted() {
+    const authorId = this.article.author
+    this.otherNewArticles = (
+      await this.$axios.get(`/api/authors/${authorId}/new-articles`, {
+        params: {
+          select: { size: 5 },
+          filter: {
+            $_exclude_article_id: this.id,
+          },
+        },
+      })
+    ).data
+    this.isFetchingOtherNewArticles = false
   },
 }
 </script>

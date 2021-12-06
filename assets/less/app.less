@@ -51,3 +51,19 @@
 .float-none{
   float: none
 }
+
+@selectors: 4, 8, 12, 16, 20, 24, 28, 32, 36, 48, 72, 96;
+each(@selectors, {
+  .mb-@{value}{
+    margin-bottom: (@value) * 1px;
+  }
+  .mt-@{value}{
+    margin-top: (@value) * 1px;
+  }
+  .ml-@{value}{
+    margin-left: (@value) * 1px;
+  }
+  .mr-@{value}{
+    margin-right: (@value) * 1px;
+  }
+});
