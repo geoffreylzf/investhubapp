@@ -26,12 +26,24 @@
       <br />
       <a-button type="primary"> Paypal </a-button>
       <a-divider />
-      <div class="comment-title">Comments</div>
-      <a-textarea class="comment-textarea" placeholder="Enter comment">
-      </a-textarea>
+      <div class="font-weight-bold">Comments</div>
+      <a-textarea
+        v-model="newComment"
+        class="mb-12"
+        placeholder="Enter comment"
+        @focus="checkAuthBeforeComment()"
+      />
+      <div class="text-right">
+        <a-button :disabled="newComment.length === 0" @click="postComment()">
+          Comment
+        </a-button>
+      </div>
+
       <div v-for="cmt in comments" :key="'c_' + cmt.id">
-        <div class="comment-user-name">{{ cmt.user_firstname }}</div>
-        <div class="comment-user-content">{{ cmt.comment }}</div>
+        <div class="font-weight-bold font-size-12">
+          {{ cmt.user_firstname }}
+        </div>
+        <div class="mb-8">{{ cmt.comment }}</div>
       </div>
     </a-col>
     <a-col :xs="24" :sm="4" class="author-profile">
@@ -75,6 +87,8 @@ export default {
     return {
       otherNewArticles: [],
       isFetchingOtherNewArticles: true,
+
+      newComment: '',
       comments: [
         {
           id: 1,
@@ -110,6 +124,26 @@ export default {
     ).data
     this.isFetchingOtherNewArticles = false
   },
+  methods: {
+    checkAuthBeforeComment() {
+      if (!this.$auth.loggedIn) {
+        // TODO pop modal to login
+        this.$router.push('/login')
+      }
+    },
+    async postComment() {
+      const comment = this.newComment
+      const artId = this.id
+      if (comment) {
+        await this.$axios.post(`/api/articles/${artId}/comments/`, {
+          content: comment,
+        })
+
+        this.newComment = ''
+        // TODO refresh commentList
+      }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>
@@ -122,7 +156,6 @@ export default {
 
   .paragraph {
     margin-bottom: 16px;
-    padding-left: 4px;
 
     pre {
       font-family: 'Roboto', 'Open Sans', sans-serif;
@@ -148,22 +181,6 @@ export default {
       }
     }
   }
-}
-
-.comment-title {
-  font-weight: bold;
-}
-
-.comment-textarea {
-  margin-bottom: 12px;
-}
-.comment-user-name {
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.comment-user-content {
-  margin-bottom: 8px;
 }
 
 .author-profile {
