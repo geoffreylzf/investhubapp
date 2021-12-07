@@ -30,6 +30,7 @@
       <a-textarea
         v-model="newComment"
         class="mb-12"
+        autosize
         placeholder="Enter comment"
         @focus="checkAuthBeforeComment()"
       />
@@ -39,12 +40,11 @@
         </a-button>
       </div>
 
-      <div v-for="cmt in comments" :key="'c_' + cmt.id">
-        <div class="font-weight-bold font-size-12">
-          {{ cmt.user_firstname }}
-        </div>
-        <div class="mb-8">{{ cmt.comment }}</div>
-      </div>
+      <ArticleCommentPanel
+        ref="commentPanel"
+        :article-id="id"
+        :user-id="article.user"
+      />
     </a-col>
     <a-col :xs="24" :sm="4" class="author-profile">
       <nuxt-link :to="'/authors/' + article.author">
@@ -89,20 +89,6 @@ export default {
       isFetchingOtherNewArticles: true,
 
       newComment: '',
-      comments: [
-        {
-          id: 1,
-          user: 1,
-          user_firstname: 'Jack',
-          comment: 'very good',
-        },
-        {
-          id: 2,
-          user_firstname: 'Nathan',
-
-          comment: 'very nice',
-        },
-      ],
     }
   },
   head() {
@@ -140,7 +126,7 @@ export default {
         })
 
         this.newComment = ''
-        // TODO refresh commentList
+        this.$refs.commentPanel.refresh()
       }
     },
   },
