@@ -18,7 +18,7 @@
               :src="art.author_img_path"
             />
             <div>
-              <div class="art-ctn-title">{{ art.article_title }}</div>
+              <div class="font-weight-bold">{{ art.article_title }}</div>
               <div class="art-ctn-desc">
                 {{
                   formatHumanDate(art.created_at) +
@@ -26,12 +26,12 @@
                   art.author_first_name
                 }}
               </div>
-              <div class="art-ctn-topic">
+              <div class="mt-8">
                 <a-tag v-for="t in art.topics" :key="t.id" color="blue">
                   {{ t.topic_name }}
                 </a-tag>
               </div>
-              <div class="art-ctn-stock">
+              <div class="mt-8">
                 <a-tag
                   v-for="sc in art.stock_counters"
                   :key="sc.id"
@@ -159,16 +159,8 @@ export default {
         flex: 0 0 48px;
       }
 
-      .art-ctn-title {
-        font-weight: bold;
-      }
-
       .art-ctn-desc {
         font-size: 12px;
-      }
-      .art-ctn-topic,
-      .art-ctn-stock {
-        margin-top: 4px;
       }
     }
 

@@ -1,7 +1,7 @@
 <template>
   <a-row class="container">
-    <a-col :xs="0" :sm="4"> Advertisement</a-col>
-    <a-col :xs="24" :sm="12" class="content">
+    <a-col :xs="0" :lg="4"> Advertisement</a-col>
+    <a-col :xs="24" :lg="12" class="content">
       <h1>
         {{ article.article_title }}
       </h1>
@@ -21,8 +21,18 @@
           </div>
         </div>
       </div>
+      <div class="mt-8">
+        <a-tag v-for="t in article.topics" :key="t.id" color="blue">
+          {{ t.topic_name }}
+        </a-tag>
+      </div>
+      <div class="mt-8">
+        <a-tag v-for="sc in article.stock_counters" :key="sc.id" color="purple">
+          {{ sc.stock_symbol }}
+        </a-tag>
+      </div>
       <a-divider />
-      Support this article by:
+      Send a tips to support this article by:
       <br />
       <a-button type="primary"> Paypal </a-button>
       <a-divider />
@@ -30,7 +40,7 @@
       <a-textarea
         v-model="newComment"
         class="mb-12"
-        autosize
+        auto-size
         placeholder="Enter comment"
         @focus="checkAuthBeforeComment()"
       />
@@ -43,10 +53,10 @@
       <ArticleCommentPanel
         ref="commentPanel"
         :article-id="id"
-        :user-id="article.user"
+        :article-author-user-id="article.user"
       />
     </a-col>
-    <a-col :xs="24" :sm="4" class="author-profile">
+    <a-col :xs="24" :lg="4" class="author-profile">
       <nuxt-link :to="'/authors/' + article.author">
         <a-card hoverable>
           <div class="text-center">
@@ -58,7 +68,7 @@
       </nuxt-link>
       <br />
       <div class="author-other-articles">
-        Other Articles by this author:
+        Other articles by this author:
         <div v-for="(oa, idx) in otherNewArticles" :key="oa.id" class="mb-8">
           {{ idx + 1 }}.
           <nuxt-link :to="'/articles/' + oa.id">
@@ -68,7 +78,7 @@
         <a-skeleton active :loading="isFetchingOtherNewArticles" />
       </div>
     </a-col>
-    <a-col :xs="0" :sm="4"> Advertisement</a-col>
+    <a-col :xs="0" :lg="4"> Advertisement</a-col>
   </a-row>
 </template>
 
@@ -121,12 +131,16 @@ export default {
       const comment = this.newComment
       const artId = this.id
       if (comment) {
-        await this.$axios.post(`/api/articles/${artId}/comments/`, {
-          content: comment,
-        })
+        try {
+          await this.$axios.post(`/api/articles/${artId}/comments/`, {
+            content: comment,
+          })
 
-        this.newComment = ''
-        this.$refs.commentPanel.refresh()
+          this.newComment = ''
+          this.$refs.commentPanel.refresh()
+        } catch (e) {
+          this.$responseError(e.response)
+        }
       }
     },
   },
