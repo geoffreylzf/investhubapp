@@ -109,7 +109,7 @@ export default {
   async mounted() {
     const authorId = this.article.author
     this.otherNewArticles = (
-      await this.$axios.get(`/api/authors/${authorId}/new-articles`, {
+      await this.$axios.get(`/api/authors/${authorId}/articles`, {
         params: {
           select: { size: 5 },
           filter: {

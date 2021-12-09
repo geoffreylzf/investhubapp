@@ -16,16 +16,14 @@
           >
             <nuxt-link :to="'/authors/' + aut.id">
               <a-card hoverable class="author-card">
-                <div class="text-center">
-                  <a-avatar :size="64" :src="aut.img_path" />
-                  <div class="author-name">{{ aut.first_name }}</div>
-                  <div class="author-date">
-                    Joined {{ formatHumanDate(aut.created_at) }}
-                  </div>
-                  <div class="author-bio">{{ aut.bio }}</div>
-                  <div class="author-article">
-                    Wrote {{ aut.article_count }} articles
-                  </div>
+                <a-avatar :size="64" :src="aut.img_path" />
+                <div class="author-name">{{ aut.first_name }}</div>
+                <div class="author-date">
+                  Joined {{ formatHumanDate(aut.created_at) }}
+                </div>
+                <div class="author-bio">{{ aut.bio }}</div>
+                <div class="author-article">
+                  Wrote {{ aut.article_count }} articles
                 </div>
               </a-card>
             </nuxt-link>
@@ -130,6 +128,7 @@ export default {
 
     .author-card {
       min-height: 300px;
+      text-align: center;
 
       .author-name {
         margin-top: 12px;
