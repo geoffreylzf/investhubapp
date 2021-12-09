@@ -3,7 +3,7 @@
     <a-col :xs="0" :sm="4"> Advertisement</a-col>
     <a-col :xs="24" :sm="16" class="content">
       <h1 class="title">List of Articles</h1>
-      <a-input v-model="searchText" placeholder="Search..." class="search" />
+      <a-input v-model="searchText" placeholder="Search..." class="mb-20" />
 
       <a-spin :spinning="isLoadingSearch">
         <div
@@ -21,9 +21,10 @@
               <div class="font-weight-bold">{{ art.article_title }}</div>
               <div class="art-ctn-desc">
                 {{
-                  formatHumanDate(art.created_at) +
-                  '. By ' +
-                  art.author_first_name
+                  'Wrote by ' +
+                  art.author_first_name +
+                  '. ' +
+                  formatHumanDate(art.created_at)
                 }}
               </div>
               <div class="mt-8">
@@ -39,6 +40,9 @@
                 >
                   {{ sc.stock_symbol }}
                 </a-tag>
+              </div>
+              <div class="art-ctn-comment mt-8">
+                <b>{{ art.comment_count }}</b> comment(s)
               </div>
             </div>
           </div>
@@ -66,7 +70,7 @@ export default {
     const data = (await $axios.get('/api/articles/')).data
     return {
       articleList: data.results,
-      currentPage: data.pages,
+      currentPage: 1,
       isContinuable: data.next !== null,
     }
   },
@@ -95,7 +99,7 @@ export default {
       ).data
 
       this.articleList = data.results
-      this.currentPage = data.pages
+      this.currentPage = 1
       this.isContinuable = data.next !== null
 
       this.isLoadingSearch = false
@@ -119,12 +123,13 @@ export default {
         return
       }
       this.isLoadingNextArticle = true
+      this.currentPage++
       await new Promise((resolve) => setTimeout(resolve, 300))
       const data = (
         await this.$axios.get('/api/articles/', {
           params: {
             filter: { article_title: this.searchText },
-            page: this.currentPage++,
+            page: this.currentPage,
           },
         })
       ).data
@@ -133,9 +138,7 @@ export default {
         this.articleList.push(x)
       })
 
-      this.currentPage = data.pages
       this.isContinuable = data.next !== null
-
       this.isLoadingNextArticle = false
     },
   },
@@ -147,9 +150,6 @@ export default {
   .content {
     padding: 0 16px;
 
-    .search {
-      margin-bottom: 20px;
-    }
     .art-ctn {
       display: flex;
       cursor: pointer;
@@ -160,6 +160,10 @@ export default {
       }
 
       .art-ctn-desc {
+        font-size: 12px;
+      }
+
+      .art-ctn-comment {
         font-size: 12px;
       }
     }

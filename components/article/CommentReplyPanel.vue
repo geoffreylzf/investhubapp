@@ -38,7 +38,22 @@
                 </div>
               </div>
               <div class="content">
-                {{ reply.content }}
+                <div v-if="reply.isEdit">
+                  <a-textarea
+                    v-model="reply.tempContent"
+                    class="mt-4 mb-4"
+                    auto-size
+                  />
+                  <div class="text-right">
+                    <a-button @click="cancelEditReply(reply)">
+                      Cancel
+                    </a-button>
+                    <a-button icon="edit" @click="saveEditedReply(reply)">
+                      Edit
+                    </a-button>
+                  </div>
+                </div>
+                <div v-else>{{ reply.content }}</div>
               </div>
             </div>
           </td>

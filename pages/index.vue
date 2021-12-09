@@ -8,7 +8,10 @@
           </div>
           <div>
             <nuxt-link to="/articles">
-              <a-button icon="file-text"> View All Articles </a-button>
+              <a-button icon="file-text">Check out all articles</a-button>
+            </nuxt-link>
+            <nuxt-link to="/authors">
+              <a-button icon="team">Check out all authors </a-button>
             </nuxt-link>
             <nuxt-link to="/stocks">
               <a-button icon="bar-chart"> Find Stock </a-button>
