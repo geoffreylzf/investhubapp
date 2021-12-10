@@ -13,9 +13,9 @@
             <nuxt-link to="/authors">
               <a-button icon="team">Check out all authors </a-button>
             </nuxt-link>
-            <nuxt-link to="/stocks">
+            <!-- <nuxt-link to="/stocks">
               <a-button icon="bar-chart"> Find Stock </a-button>
-            </nuxt-link>
+            </nuxt-link> -->
           </div>
         </a-col>
         <a-col :xs="24" :sm="12">

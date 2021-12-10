@@ -6,48 +6,51 @@
       <a-input v-model="searchText" placeholder="Search..." class="mb-20" />
 
       <a-spin :spinning="isLoadingSearch">
-        <div
+        <nuxt-link
           v-for="(art, idx) in articleList"
           :key="idx"
-          @click="goToArticle(art.id)"
+          class="link"
+          :to="'/articles/' + art.id"
         >
-          <div class="art-ctn">
-            <a-avatar
-              class="art-ctn-avatar"
-              :size="48"
-              :src="art.author_img_path"
-            />
-            <div>
-              <div class="font-weight-bold">{{ art.article_title }}</div>
-              <div class="art-ctn-desc">
-                {{
-                  'Wrote by ' +
-                  art.author_first_name +
-                  '. ' +
-                  formatHumanDate(art.created_at)
-                }}
-              </div>
-              <div class="mt-8">
-                <a-tag v-for="t in art.topics" :key="t.id" color="blue">
-                  {{ t.topic_name }}
-                </a-tag>
-              </div>
-              <div class="mt-8">
-                <a-tag
-                  v-for="sc in art.stock_counters"
-                  :key="sc.id"
-                  color="purple"
-                >
-                  {{ sc.stock_symbol }}
-                </a-tag>
-              </div>
-              <div class="art-ctn-comment mt-8">
-                <b>{{ art.comment_count }}</b> comment(s)
+          <div @click="goToArticle(art.id)">
+            <div class="art-ctn">
+              <a-avatar
+                class="art-ctn-avatar"
+                :size="48"
+                :src="art.author_img_path"
+              />
+              <div>
+                <div class="font-weight-bold">{{ art.article_title }}</div>
+                <div class="art-ctn-desc">
+                  {{
+                    'Wrote by ' +
+                    art.author_first_name +
+                    '. ' +
+                    formatHumanDate(art.created_at)
+                  }}
+                </div>
+                <div class="mt-8">
+                  <a-tag v-for="t in art.topics" :key="t.id" color="blue">
+                    {{ t.topic_name }}
+                  </a-tag>
+                </div>
+                <div class="mt-8">
+                  <a-tag
+                    v-for="sc in art.stock_counters"
+                    :key="sc.id"
+                    color="purple"
+                  >
+                    {{ sc.stock_symbol }}
+                  </a-tag>
+                </div>
+                <div class="art-ctn-comment mt-8">
+                  <b>{{ art.comment_count }}</b> comment(s)
+                </div>
               </div>
             </div>
+            <a-divider />
           </div>
-          <a-divider />
-        </div>
+        </nuxt-link>
 
         <div v-if="isContinuable" class="show-more-ctn" @click="showMore()">
           <span v-if="isLoadingNextArticle"><a-spin /></span>
@@ -114,9 +117,6 @@ export default {
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1)
     },
-    goToArticle(id) {
-      this.$router.push('/articles/' + id)
-    },
     async showMore() {
       if (this.isLoadingNextArticle) {
         // To prevent multi load
@@ -149,6 +149,11 @@ export default {
   padding: 16px;
   .content {
     padding: 0 16px;
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
 
     .art-ctn {
       display: flex;

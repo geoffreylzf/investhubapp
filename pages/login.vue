@@ -92,6 +92,7 @@ export default {
             data: v,
           })
           .then((r) => {
+            this.$router.back()
             this.$notification.success({
               message: 'Welcome Back',
             })
