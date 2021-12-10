@@ -50,7 +50,8 @@
               </a-tag>
             </div>
             <div class="comment">
-              <b>{{ art.comment_count }}</b> comment(s)
+              <b>{{ art.comment_count }}</b> comments
+              <b>{{ art.view_count }}</b> views
             </div>
           </div>
         </nuxt-link>

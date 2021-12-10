@@ -1,10 +1,13 @@
 <template>
   <a-row class="container">
-    <a-col :xs="0" :lg="4"> Advertisement</a-col>
+    <a-col :xs="0" :lg="4" class="ads"> Advertisement</a-col>
     <a-col :xs="24" :lg="12" class="content">
       <h1>
         {{ article.article_title }}
       </h1>
+      <div class="wrote-date">
+        {{ 'Wrote at ' + formatHumanDate(article.created_at) }}
+      </div>
       <div v-for="para in article.paragraphs" :key="para.id" class="paragraph">
         <div v-if="para.type === 'text'">
           <pre v-if="para.content">{{ para.content }}</pre>
@@ -78,11 +81,12 @@
         <a-skeleton active :loading="isFetchingOtherNewArticles" />
       </div>
     </a-col>
-    <a-col :xs="0" :lg="4"> Advertisement</a-col>
+    <a-col :xs="0" :lg="4" class="ads"> Advertisement</a-col>
   </a-row>
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   auth: false,
   async asyncData({ params, $axios }) {
@@ -119,8 +123,15 @@ export default {
       })
     ).data
     this.isFetchingOtherNewArticles = false
+
+    await this.$axios.post(`/api/articles/${this.id}/view/`)
   },
   methods: {
+    formatHumanDate(datetime) {
+      if (datetime) {
+        return moment(datetime).fromNow()
+      }
+    },
     checkAuthBeforeComment() {
       if (!this.$auth.loggedIn) {
         // TODO pop modal to login
@@ -148,55 +159,64 @@ export default {
 </script>
 <style lang="less" scoped>
 .container {
-  padding: 16px;
-}
+  .ads {
+    padding: 16px;
+  }
 
-.content {
-  padding: 0 16px;
+  .content {
+    padding: 16px;
 
-  .paragraph {
-    margin-bottom: 16px;
-
-    pre {
-      font-family: 'Roboto', 'Open Sans', sans-serif;
-      white-space: pre-line;
+    .wrote-date {
+      font-size: 12px;
+      font-style: italic;
+      margin-bottom: 8px;
     }
 
-    img {
-      object-fit: contain;
-      max-width: 100%;
-      max-height: 100%;
-    }
+    .paragraph {
+      margin-bottom: 16px;
 
-    .hidden-content {
-      background: whitesmoke;
-      color: lightgray;
-      height: 84px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      pre {
+        font-family: 'Roboto', 'Open Sans', sans-serif;
+        white-space: pre-line;
+      }
 
-      span {
-        margin-left: 8px;
+      img {
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .hidden-content {
+        background: whitesmoke;
+        color: lightgray;
+        height: 84px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+          margin-left: 8px;
+        }
       }
     }
   }
-}
 
-.author-profile {
-  padding-right: 16px;
-}
-.author-name {
-  margin-top: 16px;
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
+  .author-profile {
+    padding: 16px;
 
-.author-bio {
-  font-size: 12px;
-}
-.author-other-articles {
-  padding: 0 16px;
+    .author-name {
+      margin-top: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .author-bio {
+      font-size: 12px;
+    }
+    .author-other-articles {
+      padding: 0 16px;
+    }
+  }
 }
 </style>

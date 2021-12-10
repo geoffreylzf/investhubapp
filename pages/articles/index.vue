@@ -1,9 +1,11 @@
 <template>
   <a-row class="container">
-    <a-col :xs="0" :sm="4"> Advertisement</a-col>
+    <a-col :xs="0" :sm="4" class="ads"> Advertisement</a-col>
     <a-col :xs="24" :sm="16" class="content">
       <h1 class="title">List of Articles</h1>
-      <a-input v-model="searchText" placeholder="Search..." class="mb-20" />
+      <div class="search">
+        <a-input v-model="searchText" placeholder="Search..." />
+      </div>
 
       <a-spin :spinning="isLoadingSearch">
         <nuxt-link
@@ -44,11 +46,11 @@
                   </a-tag>
                 </div>
                 <div class="art-ctn-comment mt-8">
-                  <b>{{ art.comment_count }}</b> comment(s)
+                  <b>{{ art.comment_count }}</b> comments
+                  <b>{{ art.view_count }}</b> views
                 </div>
               </div>
             </div>
-            <a-divider />
           </div>
         </nuxt-link>
 
@@ -60,7 +62,7 @@
 
       <a-back-top />
     </a-col>
-    <a-col :xs="0" :sm="4"> Advertisement </a-col>
+    <a-col :xs="0" :sm="4" class="ads"> Advertisement </a-col>
   </a-row>
 </template>
 
@@ -146,9 +148,23 @@ export default {
 </script>
 <style lang="less" scoped>
 .container {
-  padding: 16px;
+  .ads {
+    padding: 16px;
+  }
+
   .content {
-    padding: 0 16px;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    min-height: 100%;
+
+    .title {
+      padding: 16px 16px 0 16px;
+    }
+
+    .search {
+      padding: 0 16px 16px 16px;
+      border-bottom: 1px solid lightgray;
+    }
 
     .link {
       text-decoration: none;
@@ -156,6 +172,8 @@ export default {
     }
 
     .art-ctn {
+      padding: 16px;
+      border-bottom: 1px solid lightgray;
       display: flex;
       cursor: pointer;
 
@@ -174,6 +192,7 @@ export default {
     }
 
     .show-more-ctn {
+      margin: 16px;
       background: aliceblue;
       height: 100px;
       cursor: pointer;

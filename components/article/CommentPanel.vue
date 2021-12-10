@@ -11,6 +11,7 @@
           class="text-right mb-12"
           :total="pagination.total"
           :page-size="pagination.pageSize"
+          :show-total="(total) => `Total ${total} comments`"
           @change="onPaginationChange"
         />
         <table>
@@ -112,6 +113,7 @@
           class="text-right mt-12 mb-12"
           :total="pagination.total"
           :page-size="pagination.pageSize"
+          :show-total="(total) => `Total ${total} comments`"
           @change="onPaginationChange"
         />
       </div>
