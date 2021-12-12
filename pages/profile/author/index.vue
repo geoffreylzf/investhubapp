@@ -59,7 +59,16 @@
       </nuxt-link>
       <br />
       <br />
-      <h2>Your Total Donation</h2>
+      <a-statistic
+        title="Your Follower"
+        :value="author.follower_count"
+        suffix="People"
+      />
+      <a-statistic
+        title="Your Donation Amount (RM)"
+        :value="0"
+        :precision="2"
+      />
     </a-col>
     <a-col :xs="0" :sm="4"></a-col>
   </a-row>

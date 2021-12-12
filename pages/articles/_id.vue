@@ -56,19 +56,25 @@
       <ArticleCommentPanel
         ref="commentPanel"
         :article-id="id"
-        :article-author-user-id="article.user"
+        :article-author-user-id="article.author.user"
       />
     </a-col>
     <a-col :xs="24" :lg="4" class="author-profile">
-      <nuxt-link :to="'/authors/' + article.author">
-        <a-card hoverable>
-          <div class="text-center">
-            <a-avatar :size="64" :src="article.author_img_path" />
-            <div class="author-name">{{ article.author_first_name }}</div>
-            <div class="author-bio">{{ article.author_bio }}</div>
-          </div>
-        </a-card>
-      </nuxt-link>
+      <a-card>
+        <div class="text-center">
+          <nuxt-link :to="'/authors/' + article.author.id" class="link">
+            <a-avatar :size="64" :src="article.author.img_path" />
+            <div class="author-name">{{ article.author.first_name }}</div>
+          </nuxt-link>
+          <div class="author-bio">{{ article.author.bio }}</div>
+          <AuthorFollowButton
+            :author-id="article.author.id"
+            :is-following="article.author.is_following"
+            @followed="afterFollow()"
+            @unfollowed="afterUnfollow()"
+          />
+        </div>
+      </a-card>
       <br />
       <div class="author-other-articles">
         Other articles by this author:
@@ -111,7 +117,7 @@ export default {
     }
   },
   async mounted() {
-    const authorId = this.article.author
+    const authorId = this.article.author.id
     this.otherNewArticles = (
       await this.$axios.get(`/api/authors/${authorId}/articles`, {
         params: {
@@ -132,9 +138,14 @@ export default {
         return moment(datetime).fromNow()
       }
     },
+    afterFollow() {
+      this.article.author.is_following = true
+    },
+    afterUnfollow() {
+      this.article.author.is_following = false
+    },
     checkAuthBeforeComment() {
       if (!this.$auth.loggedIn) {
-        // TODO pop modal to login
         this.$router.push('/login')
       }
     },
@@ -204,16 +215,23 @@ export default {
   .author-profile {
     padding: 16px;
 
-    .author-name {
-      margin-top: 16px;
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 16px;
+    .link {
+      text-decoration: none;
+      color: inherit;
+
+      .author-name {
+        margin-top: 16px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
     }
 
     .author-bio {
       font-size: 12px;
+      margin-bottom: 4px;
     }
+
     .author-other-articles {
       padding: 0 16px;
     }

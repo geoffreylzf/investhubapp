@@ -40,11 +40,8 @@
       >
         Save
       </a-button>
-    </a-col>
-    <a-col :xs="24" :md="0">
-      <a-divider></a-divider>
-    </a-col>
-    <a-col :xs="24" :md="12" :lg="8">
+
+      <a-divider />
       <nuxt-link v-if="profile.is_author" to="/profile/author">
         <a-button block icon="dashboard" size="large">
           Author Dashboard
@@ -55,6 +52,15 @@
           Author Registration
         </a-button>
       </nuxt-link>
+      <a-divider />
+    </a-col>
+    <a-col :xs="24" :md="12" :lg="8">
+      <a-statistic
+        title="Your Following"
+        :value="data.following_count"
+        suffix="Author"
+      />
+      <a-button>Manage Your Followings</a-button>
     </a-col>
     <a-col :xs="0" :lg="4" />
   </a-row>
@@ -64,8 +70,10 @@
 export default {
   async asyncData({ $axios }) {
     const profile = (await $axios.get(`/api/user/profile/`)).data.profile
+    const data = (await $axios.get(`/api/user/profile/data/`)).data
     return {
       profile,
+      data,
     }
   },
   data() {

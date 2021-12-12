@@ -9,7 +9,12 @@
             {{ author.first_name + ' ' + author.last_name }}
           </div>
           <div>
-            <a-button type="primary">Follow</a-button>
+            <AuthorFollowButton
+              :author-id="id"
+              :is-following="author.is_following"
+              @followed="afterFollow()"
+              @unfollowed="afterUnfollow()"
+            />
           </div>
         </div>
         <div class="bio">
@@ -19,7 +24,7 @@
           Joined {{ formatHumanDate(author.created_at) }}
         </div>
         <div class="follower">
-          <b>{{ 0 }}</b> followers
+          <b>{{ author.follower_count }}</b> followers
         </div>
       </div>
       <div class="article-section">
@@ -96,6 +101,14 @@ export default {
       if (datetime) {
         return moment(datetime).fromNow()
       }
+    },
+    afterFollow() {
+      this.author.is_following = true
+      this.author.follower_count++
+    },
+    afterUnfollow() {
+      this.author.is_following = false
+      this.author.follower_count--
     },
     async showMore() {
       if (this.isLoadingNextArticle) {

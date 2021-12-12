@@ -14,19 +14,25 @@
             :sm="12"
             :lg="8"
           >
-            <nuxt-link :to="'/authors/' + aut.id">
-              <a-card hoverable class="author-card">
+            <a-card class="author-card">
+              <nuxt-link :to="'/authors/' + aut.id" class="link">
                 <a-avatar :size="64" :src="aut.img_path" />
                 <div class="author-name">{{ aut.first_name }}</div>
                 <div class="author-date">
                   Joined {{ formatHumanDate(aut.created_at) }}
                 </div>
-                <div class="author-bio">{{ aut.bio }}</div>
-                <div class="author-article">
-                  Wrote {{ aut.article_count }} articles
-                </div>
-              </a-card>
-            </nuxt-link>
+              </nuxt-link>
+              <div class="author-bio">{{ aut.bio }}</div>
+              <div class="author-article">
+                Wrote {{ aut.article_count }} articles
+              </div>
+              <AuthorFollowButton
+                :author-id="aut.id"
+                :is-following="aut.is_following"
+                @followed="afterFollow(aut)"
+                @unfollowed="afterUnfollow(aut)"
+              />
+            </a-card>
           </a-col>
         </a-row>
 
@@ -90,6 +96,12 @@ export default {
         return moment(datetime).fromNow()
       }
     },
+    afterFollow(aut) {
+      aut.is_following = true
+    },
+    afterUnfollow(aut) {
+      aut.is_following = false
+    },
     goToAuthor(id) {
       this.$router.push('/authors/' + id)
     },
@@ -130,16 +142,21 @@ export default {
       min-height: 300px;
       text-align: center;
 
-      .author-name {
-        margin-top: 12px;
-        font-size: 16px;
-        font-weight: bold;
-      }
+      .link {
+        text-decoration: none;
+        color: inherit;
 
-      .author-date {
-        font-size: 12px;
-        margin-bottom: 8px;
-        font-style: italic;
+        .author-name {
+          margin-top: 12px;
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        .author-date {
+          font-size: 12px;
+          margin-bottom: 8px;
+          font-style: italic;
+        }
       }
 
       .author-bio {
@@ -149,6 +166,7 @@ export default {
       .author-article {
         font-weight: bold;
         margin-top: 8px;
+        margin-bottom: 4px;
       }
     }
 
