@@ -58,9 +58,12 @@
       <a-statistic
         title="Your Following"
         :value="data.following_count"
-        suffix="Author"
+        suffix="Authors"
       />
-      <a-button>Manage Your Followings</a-button>
+      <br />
+      <nuxt-link to="/profile/followings">
+        <a-button>Manage Your Followings</a-button>
+      </nuxt-link>
     </a-col>
     <a-col :xs="0" :lg="4" />
   </a-row>

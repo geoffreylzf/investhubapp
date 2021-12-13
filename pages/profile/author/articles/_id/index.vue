@@ -49,8 +49,8 @@
     <a-col :xs="24" :sm="4" class="status">
       <a-statistic title="View Count" :value="0" />
       <a-statistic title="Comment Count" :value="0" />
-      <a-statistic title="Tips Count" :value="0" />
-      <a-statistic title="Tips Amount" :precision="2" :value="0" />
+      <a-statistic title="Sponsor Count" :value="0" />
+      <a-statistic title="Sponsor Amount" :precision="2" :value="0" />
     </a-col>
     <a-col :xs="0" :sm="4" />
   </a-row>

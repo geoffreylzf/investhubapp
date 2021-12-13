@@ -1,7 +1,6 @@
 <template>
-  <a-row class="container">
-    <a-col :xs="0" :sm="4" class="ads"> Advertisement</a-col>
-    <a-col :xs="24" :sm="16" class="content">
+  <UtilAdsContainer>
+    <div class="content">
       <div class="author-section">
         <a-avatar :size="84" :src="author.img_path" />
         <div class="name">
@@ -69,9 +68,8 @@
           <span v-else>Show More <a-icon type="down" /></span>
         </div>
       </div>
-    </a-col>
-    <a-col :xs="0" :sm="4" class="ads">Advertisement</a-col>
-  </a-row>
+    </div>
+  </UtilAdsContainer>
 </template>
 
 <script>
@@ -139,75 +137,69 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
-  .ads {
+.content {
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  min-height: 100%;
+
+  .author-section {
     padding: 16px;
+    .name {
+      margin: 4px 0;
+      font-weight: bold;
+      font-size: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .join-date {
+      font-size: 12px;
+      font-style: italic;
+    }
   }
 
-  .content {
-    border-left: 1px solid lightgray;
-    border-right: 1px solid lightgray;
-    min-height: 100%;
+  .article-section {
+    border-top: 1px solid lightgray;
 
-    .author-section {
-      padding: 16px;
-      .name {
-        margin: 4px 0;
-        font-weight: bold;
-        font-size: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    .section-title {
+      font-weight: bold;
+      color: mediumpurple;
+      padding: 4px 16px;
+      border-bottom: 1px solid lightgray;
+    }
 
-      .join-date {
-        font-size: 12px;
-        font-style: italic;
+    .link {
+      text-decoration: none;
+      color: inherit;
+
+      .article-ctn {
+        padding: 16px;
+        border-bottom: 1px solid lightgray;
+        cursor: pointer;
+
+        .title {
+          font-weight: bold;
+          font-size: 16px;
+        }
+        .wrote-date {
+          font-size: 12px;
+          font-style: italic;
+        }
+        .comment {
+          font-size: 12px;
+        }
       }
     }
 
-    .article-section {
-      border-top: 1px solid lightgray;
-
-      .section-title {
-        font-weight: bold;
-        color: mediumpurple;
-        padding: 4px 16px;
-        border-bottom: 1px solid lightgray;
-      }
-
-      .link {
-        text-decoration: none;
-        color: inherit;
-
-        .article-ctn {
-          padding: 16px;
-          border-bottom: 1px solid lightgray;
-          cursor: pointer;
-
-          .title {
-            font-weight: bold;
-            font-size: 16px;
-          }
-          .wrote-date {
-            font-size: 12px;
-            font-style: italic;
-          }
-          .comment {
-            font-size: 12px;
-          }
-        }
-      }
-
-      .show-more-ctn {
-        margin: 16px;
-        background: aliceblue;
-        height: 100px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    .show-more-ctn {
+      margin: 16px;
+      background: aliceblue;
+      height: 100px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

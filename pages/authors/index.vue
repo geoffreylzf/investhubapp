@@ -1,7 +1,6 @@
 <template>
-  <a-row class="container">
-    <a-col :xs="0" :sm="4"> Advertisement</a-col>
-    <a-col :xs="24" :sm="16" class="content">
+  <UtilAdsContainer>
+    <div class="content">
       <h1 class="title">List of Authors</h1>
       <a-input v-model="searchText" placeholder="Search..." class="mb-20" />
 
@@ -41,9 +40,8 @@
           <span v-else>Show More <a-icon type="down" /></span>
         </div>
       </a-spin>
-    </a-col>
-    <a-col :xs="0" :sm="4"> Advertisement</a-col>
-  </a-row>
+    </div>
+  </UtilAdsContainer>
 </template>
 
 <script>
@@ -133,53 +131,50 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
+.content {
   padding: 16px;
-  .content {
-    padding: 0 16px;
 
-    .author-card {
-      min-height: 300px;
-      text-align: center;
+  .author-card {
+    min-height: 300px;
+    text-align: center;
 
-      .link {
-        text-decoration: none;
-        color: inherit;
+    .link {
+      text-decoration: none;
+      color: inherit;
 
-        .author-name {
-          margin-top: 12px;
-          font-size: 16px;
-          font-weight: bold;
-        }
-
-        .author-date {
-          font-size: 12px;
-          margin-bottom: 8px;
-          font-style: italic;
-        }
-      }
-
-      .author-bio {
-        font-size: 12px;
-      }
-
-      .author-article {
+      .author-name {
+        margin-top: 12px;
+        font-size: 16px;
         font-weight: bold;
-        margin-top: 8px;
-        margin-bottom: 4px;
+      }
+
+      .author-date {
+        font-size: 12px;
+        margin-bottom: 8px;
+        font-style: italic;
       }
     }
 
-    .show-more-ctn {
-      background: aliceblue;
-      width: 100%;
-      height: 100px;
-      cursor: pointer;
-      display: flex;
-      margin-top: 8px;
-      justify-content: center;
-      align-items: center;
+    .author-bio {
+      font-size: 12px;
     }
+
+    .author-article {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+  }
+
+  .show-more-ctn {
+    background: aliceblue;
+    width: 100%;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    margin-top: 8px;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

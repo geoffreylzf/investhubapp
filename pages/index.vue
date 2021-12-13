@@ -24,7 +24,7 @@
               For author, you can share your idea on how to invest stock
             </div>
             <div class="right-sub-title">
-              You might get tips from sharing your idea
+              You might get sponsor from sharing your idea
             </div>
             <a-button type="primary" to="/profile/register-author" icon="form">
               Become Author
