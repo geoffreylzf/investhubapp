@@ -1,14 +1,14 @@
 <template>
   <button class="btn" @click="$emit('click')">
-    <PaypalSvg />
+    <img src="~assets/svg/paypal.svg" />
   </button>
 </template>
 
 <script>
 export default {
-  components: {
-    PaypalSvg: () => import('~/assets/svg/paypal.svg?inline'),
-  },
+  // components: {
+  //   PaypalSvg: () => import('~/assets/svg/paypal.svg?inline'),
+  // },
 }
 </script>
 
@@ -22,7 +22,7 @@ export default {
   align-items: center;
   width: 140px;
   padding: 0 12px;
-  height: 44px;
+  height: 48px;
   cursor: pointer;
 }
 </style>

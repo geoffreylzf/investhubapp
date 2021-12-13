@@ -7,7 +7,7 @@
     @ok="handleOkClick()"
   >
     <div class="payment-logo">
-      <PaypalSvg v-if="type === 'paypal'" />
+      <img v-if="type === 'paypal'" src="~assets/svg/paypal.svg" />
     </div>
     <div>
       <a-radio-group v-model="sponsorAmt">
@@ -29,9 +29,6 @@
 
 <script>
 export default {
-  components: {
-    PaypalSvg: () => import('~/assets/svg/paypal.svg?inline'),
-  },
   props: {
     show: {
       type: Boolean,
