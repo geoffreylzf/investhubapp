@@ -1,13 +1,13 @@
 <template>
   <a-modal
     :visible="modalShow"
-    title="Sponsor"
+    :title="'Sponsor to ' + authorName"
     ok-text="Sponsor"
     @cancel="$emit('cancel')"
     @ok="handleOkClick()"
   >
     <div class="payment-logo">
-      <img v-if="type === 'paypal'" src="~assets/svg/paypal.svg" />
+      <img v-if="paymentType === 'paypal'" src="~assets/svg/paypal.svg" />
     </div>
     <div>
       <a-radio-group v-model="sponsorAmt">
@@ -34,7 +34,15 @@ export default {
       type: Boolean,
       default: false,
     },
-    type: {
+    authorName: {
+      type: String,
+      required: true,
+    },
+    articleId: {
+      type: Number,
+      required: true,
+    },
+    paymentType: {
       type: String,
       default: null,
     },
@@ -58,7 +66,13 @@ export default {
     },
   },
   methods: {
-    handleOkClick() {
+    async handleOkClick() {
+      if (!this.paymentType) {
+        this.$error({
+          title: 'Payment type is unknown',
+        })
+        return
+      }
       let finalAmt = 0
       if (this.sponsorAmt) {
         finalAmt = this.sponsorAmt
@@ -73,7 +87,17 @@ export default {
         return
       }
 
-      console.log(finalAmt)
+      try {
+        await this.$axios.post(`/api/articles/${this.id}/sponsor/`, {
+          article: this.articleId,
+          payment_type: this.paymentType,
+          amt: finalAmt,
+        })
+
+        this.$emit('success')
+      } catch (e) {
+        this.$responseError(e.response)
+      }
     },
   },
 }

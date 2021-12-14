@@ -2,7 +2,13 @@
   <UtilAdsContainer>
     <div class="content">
       <div class="author-section">
-        <a-avatar :size="84" :src="author.img_path" />
+        <div class="avatar">
+          <a-avatar :size="84" :src="author.img_path" />
+          <div v-if="author.current_user_support.is_support" class="supporter">
+            Your support to this author remaining
+            {{ author.current_user_support.remaining_days }} days
+          </div>
+        </div>
         <div class="name">
           <div>
             {{ author.first_name + ' ' + author.last_name }}
@@ -23,6 +29,7 @@
           Joined {{ formatHumanDate(author.created_at) }}
         </div>
         <div class="follower">
+          <b>{{ author.article_count }}</b> articles
           <b>{{ author.follower_count }}</b> followers
         </div>
       </div>
@@ -94,6 +101,11 @@ export default {
       isLoadingNextArticle: false,
     }
   },
+  head() {
+    return {
+      title: this.author.first_name,
+    }
+  },
   methods: {
     formatHumanDate(datetime) {
       if (datetime) {
@@ -144,6 +156,17 @@ export default {
 
   .author-section {
     padding: 16px;
+    .avatar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      .supporter {
+        font-size: 12px;
+        color: rebeccapurple;
+        font-style: italic;
+      }
+    }
     .name {
       margin: 4px 0;
       font-weight: bold;

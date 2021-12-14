@@ -17,6 +17,13 @@
               <b>{{ aut.article_count }}</b> articles
               <b>{{ aut.follower_count }}</b> followers
             </div>
+            <div
+              v-if="aut.current_user_support.is_support"
+              class="aut-ctn-supporter"
+            >
+              Your support to this author remaining
+              {{ aut.current_user_support.remaining_days }} days
+            </div>
           </nuxt-link>
         </div>
         <AuthorFollowButton
@@ -121,17 +128,21 @@ export default {
         text-decoration: none;
         color: inherit;
 
-        .aut-ctn-bio {
+        .aut-ctn-bio,
+        .aut-ctn-count {
           font-size: 12px;
         }
 
-        .aut-ctn-count {
+        .aut-ctn-supporter {
           font-size: 12px;
+          color: rebeccapurple;
+          font-style: italic;
         }
       }
     }
 
     .aut-ctn-follow-btn {
+      margin-left: 8px;
       flex: 0 0 100px;
     }
   }

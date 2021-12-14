@@ -6,12 +6,16 @@
           {{ article.article_title }}
         </h1>
         <div class="wrote-date">
-          {{ 'Wrote at ' + formatHumanDate(article.created_at) }}
+          {{ `Wrote at ${formatHumanDate(article.created_at)}` }}
+          {{ `Viewed ${article.view_count} times` }}
         </div>
         <div
           v-for="para in article.paragraphs"
           :key="para.id"
           class="paragraph"
+          :class="{
+            'supporter-view': para.is_supporter_view_only,
+          }"
         >
           <div v-if="para.type === 'text'">
             <pre v-if="para.content">{{ para.content }}</pre>
@@ -43,22 +47,29 @@
           </a-tag>
         </div>
 
-        <div>
+        <div class="sponsor">
           <a-divider />
           <div>
             If you manage to get a nice profit from reading this article, why
-            don't you sponsor a bit to support {{ article.author.first_name }}
+            don't you sponsor a bit to support <b>{{ author.first_name }}</b>
           </div>
           <div class="mb-4">
             如果您通过阅读这篇文章获得了不错的收益，为什么不赞助一点来支持
-            {{ article.author.first_name }}
+            <b>{{ author.first_name }}</b>
           </div>
           <SponsorPaypalButton @click="showSponsorModal('paypal')" />
           <SponsorAmountModal
             :show="sponsorModal.isShow"
-            :type="sponsorModal.type"
+            :payment-type="sponsorModal.type"
+            :article-id="id"
+            :author-name="author.first_name"
             @cancel="sponsorModal.isShow = false"
+            @success="sponsorSuccess()"
           />
+          <div v-if="article.current_user_sponsor.is_sponsor" class="note">
+            * You sponsored this article at
+            {{ article.current_user_sponsor.last_date }}
+          </div>
           <a-divider />
         </div>
 
@@ -84,27 +95,46 @@
         <ArticleCommentPanel
           ref="commentPanel"
           :article-id="id"
-          :article-author-user-id="article.author.user"
+          :article-author-user-id="author.user"
         />
       </a-col>
-      <a-col :md="24" :lg="6" class="author-profile">
-        <a-card>
+      <a-col :md="24" :lg="6" class="author-section">
+        <a-card class="card">
           <div class="text-center">
-            <nuxt-link :to="'/authors/' + article.author.id" class="link">
-              <a-avatar :size="64" :src="article.author.img_path" />
-              <div class="author-name">{{ article.author.first_name }}</div>
+            <nuxt-link :to="'/authors/' + author.id" class="link">
+              <a-avatar :size="64" :src="author.img_path" />
+              <div class="name">{{ author.first_name }}</div>
             </nuxt-link>
-            <div class="author-bio">{{ article.author.bio }}</div>
+            <div class="bio">{{ author.bio }}</div>
             <AuthorFollowButton
-              :author-id="article.author.id"
-              :is-following="article.author.is_following"
+              :author-id="author.id"
+              :is-following="author.is_following"
               @followed="afterFollow()"
               @unfollowed="afterUnfollow()"
             />
           </div>
         </a-card>
-        <br />
-        <div class="author-other-articles">
+
+        <div v-if="author.current_user_support.is_support" class="supporter">
+          You are supporter of <b>{{ author.first_name }}</b>
+          <table>
+            <tbody>
+              <tr>
+                <td>Last Support Date</td>
+                <td class="text-right">
+                  {{ author.current_user_support.last_date }}
+                </td>
+              </tr>
+              <tr>
+                <td>Remaining Support Day</td>
+                <td class="text-right">
+                  {{ author.current_user_support.remaining_days }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="other-articles">
           Other articles by this author:
           <div v-for="(oa, idx) in otherNewArticles" :key="oa.id" class="mb-8">
             {{ idx + 1 }}.
@@ -126,9 +156,11 @@ export default {
   async asyncData({ params, $axios }) {
     const id = parseInt(params.id)
     const article = (await $axios.get(`/api/articles/${id}`)).data
+    const author = article.author
     return {
       id,
       article,
+      author,
     }
   },
   data() {
@@ -150,7 +182,7 @@ export default {
     }
   },
   async mounted() {
-    const authorId = this.article.author.id
+    const authorId = this.author.id
     this.otherNewArticles = (
       await this.$axios.get(`/api/authors/${authorId}/articles`, {
         params: {
@@ -180,11 +212,18 @@ export default {
       this.sponsorModal.type = type
       this.sponsorModal.isShow = true
     },
+    async sponsorSuccess() {
+      this.sponsorModal.isShow = false
+      this.$notification.success({
+        message: 'Thank you for your sponsor / 谢谢你的支持',
+      })
+      await this.$nuxt.refresh()
+    },
     afterFollow() {
-      this.article.author.is_following = true
+      this.author.is_following = true
     },
     afterUnfollow() {
-      this.article.author.is_following = false
+      this.author.is_following = false
     },
     checkAuthBeforeComment() {
       if (!this.$auth.loggedIn) {
@@ -223,6 +262,11 @@ export default {
   .paragraph {
     margin-bottom: 16px;
 
+    &.supporter-view {
+      border-left: 2px mediumpurple solid;
+      padding-left: 8px;
+    }
+
     pre {
       font-family: 'Roboto', 'Open Sans', sans-serif;
       white-space: pre-line;
@@ -247,29 +291,53 @@ export default {
       }
     }
   }
+
+  .sponsor {
+    .note {
+      font-size: 12px;
+      color: rebeccapurple;
+      font-style: italic;
+    }
+  }
 }
 
-.author-profile {
+.author-section {
   padding: 16px;
 
-  .link {
-    text-decoration: none;
-    color: inherit;
+  .card {
+    margin-bottom: 16px;
 
-    .author-name {
-      margin-top: 16px;
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 16px;
+    .link {
+      text-decoration: none;
+      color: inherit;
+
+      .name {
+        margin-top: 16px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
+    }
+
+    .bio {
+      font-size: 12px;
+      margin-bottom: 4px;
     }
   }
 
-  .author-bio {
+  .supporter {
+    margin-bottom: 16px;
+    background: aliceblue;
+    color: steelblue;
+    padding: 8px 16px;
     font-size: 12px;
-    margin-bottom: 4px;
+
+    table {
+      width: 100%;
+    }
   }
 
-  .author-other-articles {
+  .other-articles {
     padding: 0 16px;
   }
 }

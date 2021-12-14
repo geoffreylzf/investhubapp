@@ -28,23 +28,24 @@
         class="paragraph"
         :class="{
           'supporter-view': para.is_supporter_view_only,
-          'public-view': !para.is_supporter_view_only,
         }"
       >
         <pre v-if="para.type === 'text'">{{ para.content }}</pre>
         <img v-else-if="para.type === 'image'" :src="para.article_img_path" />
       </div>
-      <div>
+      <div class="mt-8">
         <a-tag v-for="t in article.topics" :key="t.id" color="blue">
           {{ t.topic_name }}
         </a-tag>
       </div>
-      <br />
-      <div>
+      <div class="mt-8">
         <a-tag v-for="sc in article.stock_counters" :key="sc.id" color="purple">
           {{ sc.stock_symbol }}
         </a-tag>
       </div>
+    </a-col>
+    <a-col :xs="24" :sm="0">
+      <a-divider />
     </a-col>
     <a-col :xs="24" :sm="4" class="status">
       <a-statistic title="View Count" :value="0" />
@@ -78,33 +79,31 @@ export default {
 
 <style lang="less" scoped>
 .container {
-  padding: 16px;
-  .status {
-    margin: 16px;
+  .content {
+    padding: 16px;
+
+    .paragraph {
+      margin-bottom: 16px;
+
+      &.supporter-view {
+        border-left: 2px darkseagreen solid;
+        padding-left: 8px;
+      }
+
+      pre {
+        font-family: 'Roboto', 'Open Sans', sans-serif;
+        white-space: pre-line;
+      }
+
+      img {
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
   }
-
-  .paragraph {
-    margin-bottom: 16px;
-    padding-left: 4px;
-
-    &.supporter-view {
-      border-left: 4px darkseagreen solid;
-    }
-
-    &.public-view {
-      border-left: 4px white solid;
-    }
-
-    pre {
-      font-family: 'Roboto', 'Open Sans', sans-serif;
-      white-space: pre-line;
-    }
-
-    img {
-      object-fit: contain;
-      max-width: 100%;
-      max-height: 100%;
-    }
+  .status {
+    padding: 16px;
   }
 }
 </style>
