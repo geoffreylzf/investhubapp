@@ -53,22 +53,17 @@
       </a-button>
     </a-col>
     <a-col :xs="24" :sm="8" class="p-16">
-      <h2>Your Latest Article</h2>
       <nuxt-link to="/profile/author/articles">
-        <a-button icon="container">View All Your Articles</a-button>
+        <a-button icon="container">Manage Your Articles</a-button>
       </nuxt-link>
-      <br />
-      <br />
       <a-statistic
+        class="mt-16"
         title="Your Follower"
         :value="author.follower_count"
         suffix="People"
       />
-      <a-statistic
-        title="Your Fund (RM) From Sponsor "
-        :value="0"
-        :precision="2"
-      />
+      <a-divider />
+      <UserAuthorFundPanel />
     </a-col>
     <a-col :xs="0" :sm="4"></a-col>
   </a-row>
