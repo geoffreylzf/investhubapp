@@ -60,10 +60,16 @@
         :value="data.following_count"
         suffix="Authors"
       />
-      <br />
-      <nuxt-link to="/profile/followings">
-        <a-button>Manage Your Followings</a-button>
-      </nuxt-link>
+      <div class="mt-16">
+        <nuxt-link to="/profile/followings">
+          <a-button>Manage Your Followings</a-button>
+        </nuxt-link>
+      </div>
+      <div class="mt-16">
+        <nuxt-link to="/profile/sponsors">
+          <a-button>View Your Sponsors History</a-button>
+        </nuxt-link>
+      </div>
     </a-col>
     <a-col :xs="0" :lg="4" />
   </a-row>

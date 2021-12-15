@@ -1,34 +1,27 @@
 <template>
   <a-row class="m-16">
-    <a-col :xs="0" :sm="4" />
-    <a-col :xs="24" :sm="16">
-      <h1>Your Articles</h1>
-      <nuxt-link to="/profile/author/articles/create">
-        <a-button icon="plus">Create</a-button>
-      </nuxt-link>
+    <a-col :sm="0" :md="4" />
+    <a-col :sm="24" :md="16">
+      <h1>Your Sponsors History</h1>
       <UtilFilterTable
-        get-url="/api/user/profile/author/articles/"
+        get-url="/api/user/profile/sponsors/"
         :columns="columns"
         :init-data="initData"
       >
         <template #articleTitle="{ rowData }">
-          <nuxt-link :to="`/profile/author/articles/${rowData.id}`">
+          <nuxt-link :to="`/articles/${rowData.article}`">
             {{ rowData.article_title }}
           </nuxt-link>
         </template>
 
-        <template #action="{ rowData }">
-          <nuxt-link :to="`/profile/author/articles/${rowData.id}`">
-            <a-icon type="eye" />
-          </nuxt-link>
-          <span>&nbsp;</span>
-          <nuxt-link :to="`/profile/author/articles/${rowData.id}/update`">
-            <a-icon type="edit" />
+        <template #author="{ rowData }">
+          <nuxt-link :to="`/articles/${rowData.author}`" class="text-center">
+            {{ rowData.author_first_name }}
           </nuxt-link>
         </template>
       </UtilFilterTable>
     </a-col>
-    <a-col :xs="0" :sm="4" />
+    <a-col :sm="0" :md="4" />
   </a-row>
 </template>
 
@@ -36,7 +29,7 @@
 export default {
   async asyncData({ $axios }) {
     return {
-      initData: (await $axios.get('/api/user/profile/author/articles/')).data,
+      initData: (await $axios.get('/api/user/profile/sponsors/')).data,
     }
   },
   data() {
@@ -49,6 +42,14 @@ export default {
           bodyClass: 'text-center',
         },
         {
+          title: 'Sponsor Date',
+          dataIndex: 'sponsor_date',
+          width: '120px',
+          bodyClass: 'text-center',
+          filter: true,
+          sorter: true,
+        },
+        {
           title: 'Article Title',
           dataIndex: 'article_title',
           filter: true,
@@ -57,41 +58,44 @@ export default {
         },
         {
           title: 'Publish',
-          dataIndex: 'is_publish',
+          dataIndex: 'article_is_publish',
           bodyClass: 'text-center',
-          width: '100px',
+          width: '80px',
           isBoolean: true,
           filter: true,
           sorter: true,
         },
         {
-          title: 'Created At',
-          dataIndex: 'created_at',
+          title: 'Author',
+          dataIndex: 'author_first_name',
           width: '150px',
           bodyClass: 'text-center',
           filter: true,
           sorter: true,
+          scopedSlot: 'author',
         },
         {
-          title: 'Updated At',
-          dataIndex: 'updated_at',
-          width: '150px',
-          bodyClass: 'text-center',
-          filter: true,
+          title: 'Amt',
+          dataIndex: 'amt',
+          width: '80px',
+          decimal: 2,
+          bodyClass: 'text-right',
           sorter: true,
         },
         {
-          title: 'Action',
+          title: 'Type',
+          dataIndex: 'payment_type',
           width: '80px',
           bodyClass: 'text-center',
-          scopedSlot: 'action',
+          filter: true,
+          sorter: true,
         },
       ],
     }
   },
   head() {
     return {
-      title: 'Your Articles',
+      title: 'Your Sponsors History',
     }
   },
 }

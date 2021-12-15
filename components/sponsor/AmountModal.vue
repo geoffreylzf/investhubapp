@@ -24,6 +24,13 @@
         </a-radio>
       </a-radio-group>
     </div>
+    <div class="note">
+      * After you make any sponsor, you will become supporter of
+      <b>{{ authorName }}</b> for 30 days
+      <br />
+      * Multiple sponsor will not increase days of supporter, only refresh to 30
+      days
+    </div>
   </a-modal>
 </template>
 
@@ -117,5 +124,10 @@ export default {
 .other-amt-input {
   width: 150px;
   margin-left: 16px;
+}
+
+.note {
+  margin-top: 8px;
+  font-size: 12px;
 }
 </style>

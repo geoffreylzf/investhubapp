@@ -59,6 +59,9 @@
 
 @selectors: 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 48, 60, 72, 84, 96;
 each(@selectors, {
+  .m-@{value}{
+    margin: (@value) * 1px;
+  }
   .mb-@{value}{
     margin-bottom: (@value) * 1px;
   }
@@ -70,5 +73,9 @@ each(@selectors, {
   }
   .mr-@{value}{
     margin-right: (@value) * 1px;
+  }
+
+  .p-@{value}{
+    padding: (@value) * 1px;
   }
 });

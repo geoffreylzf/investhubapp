@@ -1,7 +1,7 @@
 <template>
-  <a-row class="container">
+  <a-row>
     <a-col :xs="0" :sm="4"></a-col>
-    <a-col :xs="24" :sm="8" class="content-left">
+    <a-col :xs="24" :sm="8" class="p-16">
       <h1>Your Author Profile</h1>
       <a-form :form="form">
         <a-form-item
@@ -52,7 +52,7 @@
         Save
       </a-button>
     </a-col>
-    <a-col :xs="24" :sm="8" class="content-right">
+    <a-col :xs="24" :sm="8" class="p-16">
       <h2>Your Latest Article</h2>
       <nuxt-link to="/profile/author/articles">
         <a-button icon="container">View All Your Articles</a-button>
@@ -65,7 +65,7 @@
         suffix="People"
       />
       <a-statistic
-        title="Your Donation Amount (RM)"
+        title="Your Fund (RM) From Sponsor "
         :value="0"
         :precision="2"
       />
@@ -141,12 +141,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.container {
-  padding: 16px;
-}
-.content-left {
-  padding-right: 16px;
-}
-</style>
