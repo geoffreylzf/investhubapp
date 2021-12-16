@@ -13,42 +13,43 @@
           class="link"
           :to="'/articles/' + art.id"
         >
-          <div class="art-ctn">
-            <a-avatar
-              class="art-ctn-avatar"
-              :size="48"
-              :src="art.author_img_path"
-            />
-            <div>
-              <div class="font-weight-bold">{{ art.article_title }}</div>
-              <div class="art-ctn-desc">
-                {{
-                  'Wrote by ' +
-                  art.author_first_name +
-                  '. ' +
-                  formatHumanDate(art.created_at)
-                }}
-              </div>
-              <div class="mt-8">
-                <a-tag v-for="t in art.topics" :key="t.id" color="blue">
-                  {{ t.topic_name }}
-                </a-tag>
-              </div>
-              <div class="mt-8">
-                <a-tag
-                  v-for="sc in art.stock_counters"
-                  :key="sc.id"
-                  color="purple"
-                >
-                  {{ sc.stock_symbol }}
-                </a-tag>
-              </div>
-              <div class="art-ctn-comment mt-8">
-                <b>{{ art.comment_count }}</b> comments
-                <b>{{ art.view_count }}</b> views
+          <a-card class="art-card" hoverable>
+            <div class="art-ctn">
+              <a-avatar
+                class="art-ctn-avatar"
+                :size="48"
+                :src="art.author_img_path"
+              />
+              <div>
+                <div class="font-weight-bold">{{ art.article_title }}</div>
+                <div class="art-ctn-desc">
+                  {{
+                    art.author_first_name +
+                    '. ' +
+                    formatHumanDate(art.created_at)
+                  }}
+                </div>
+                <div class="mt-8">
+                  <a-tag v-for="t in art.topics" :key="t.id" color="blue">
+                    {{ t.topic_name }}
+                  </a-tag>
+                </div>
+                <div class="mt-8">
+                  <a-tag
+                    v-for="sc in art.stock_counters"
+                    :key="sc.id"
+                    color="purple"
+                  >
+                    {{ sc.stock_symbol }}
+                  </a-tag>
+                </div>
+                <div class="art-ctn-comment mt-8">
+                  <b>{{ art.comment_count }}</b> comments
+                  <b>{{ art.view_count }}</b> views
+                </div>
               </div>
             </div>
-          </div>
+          </a-card>
         </nuxt-link>
 
         <div v-if="isContinuable" class="show-more-ctn" @click="showMore()">
@@ -144,8 +145,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .content {
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
   min-height: 100%;
 
   .title {
@@ -154,7 +153,6 @@ export default {
 
   .search {
     padding: 0 16px 16px 16px;
-    border-bottom: 1px solid lightgray;
   }
 
   .link {
@@ -162,23 +160,30 @@ export default {
     color: inherit;
   }
 
-  .art-ctn {
-    padding: 16px;
-    border-bottom: 1px solid lightgray;
-    display: flex;
-    cursor: pointer;
+  .art-card {
+    margin: 16px;
 
-    .art-ctn-avatar {
-      margin-right: 12px;
-      flex: 0 0 48px;
-    }
+    ::v-deep .ant-card-body {
+      padding: 0;
 
-    .art-ctn-desc {
-      font-size: 12px;
-    }
+      .art-ctn {
+        padding: 16px;
+        display: flex;
+        cursor: pointer;
 
-    .art-ctn-comment {
-      font-size: 12px;
+        .art-ctn-avatar {
+          margin-right: 12px;
+          flex: 0 0 48px;
+        }
+
+        .art-ctn-desc {
+          font-size: 12px;
+        }
+
+        .art-ctn-comment {
+          font-size: 12px;
+        }
+      }
     }
   }
 

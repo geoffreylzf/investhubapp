@@ -41,30 +41,32 @@
           class="link"
           :to="'/articles/' + art.id"
         >
-          <div class="article-ctn">
-            <div class="title">{{ art.article_title }}</div>
-            <div class="wrote-date">
-              {{ 'Wrote at ' + formatHumanDate(art.created_at) }}
+          <a-card class="article-card" hoverable>
+            <div class="article-ctn">
+              <div class="title">{{ art.article_title }}</div>
+              <div class="wrote-date">
+                {{ formatHumanDate(art.created_at) }}
+              </div>
+              <div class="mt-4">
+                <a-tag v-for="t in art.topics" :key="t.id" color="blue">
+                  {{ t.topic_name }}
+                </a-tag>
+              </div>
+              <div class="mt-4">
+                <a-tag
+                  v-for="sc in art.stock_counters"
+                  :key="sc.id"
+                  color="purple"
+                >
+                  {{ sc.stock_symbol }}
+                </a-tag>
+              </div>
+              <div class="comment">
+                <b>{{ art.comment_count }}</b> comments
+                <b>{{ art.view_count }}</b> views
+              </div>
             </div>
-            <div class="mt-4">
-              <a-tag v-for="t in art.topics" :key="t.id" color="blue">
-                {{ t.topic_name }}
-              </a-tag>
-            </div>
-            <div class="mt-4">
-              <a-tag
-                v-for="sc in art.stock_counters"
-                :key="sc.id"
-                color="purple"
-              >
-                {{ sc.stock_symbol }}
-              </a-tag>
-            </div>
-            <div class="comment">
-              <b>{{ art.comment_count }}</b> comments
-              <b>{{ art.view_count }}</b> views
-            </div>
-          </div>
+          </a-card>
         </nuxt-link>
         <div
           v-if="isArticleContinuable"
@@ -150,12 +152,13 @@ export default {
 
 <style lang="less" scoped>
 .content {
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
   min-height: 100%;
 
   .author-section {
     padding: 16px;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+
     .avatar {
       display: flex;
       justify-content: space-between;
@@ -190,27 +193,35 @@ export default {
       color: mediumpurple;
       padding: 4px 16px;
       border-bottom: 1px solid lightgray;
+      border-left: 1px solid lightgray;
+      border-right: 1px solid lightgray;
     }
 
     .link {
       text-decoration: none;
       color: inherit;
 
-      .article-ctn {
-        padding: 16px;
-        border-bottom: 1px solid lightgray;
-        cursor: pointer;
+      .article-card {
+        margin: 16px;
 
-        .title {
-          font-weight: bold;
-          font-size: 16px;
-        }
-        .wrote-date {
-          font-size: 12px;
-          font-style: italic;
-        }
-        .comment {
-          font-size: 12px;
+        ::v-deep .ant-card-body {
+          padding: 0;
+          .article-ctn {
+            padding: 16px;
+            cursor: pointer;
+
+            .title {
+              font-weight: bold;
+              font-size: 16px;
+            }
+            .wrote-date {
+              font-size: 12px;
+              font-style: italic;
+            }
+            .comment {
+              font-size: 12px;
+            }
+          }
         }
       }
     }
