@@ -7,7 +7,7 @@
         <a-tag v-if="article.is_publish" color="green"> Publish </a-tag>
         <a-tag v-else color="red"> Not Yet Publish </a-tag>
       </h1>
-      <p>
+      <p class="cu-date">
         <i>Created at {{ article.created_at }}</i>
         &nbsp;
         <i>Last updated at {{ article.updated_at }}</i>
@@ -48,10 +48,26 @@
       <a-divider />
     </a-col>
     <a-col :xs="24" :sm="4" class="status">
-      <a-statistic title="View Count" :value="0" />
-      <a-statistic title="Comment Count" :value="0" />
-      <a-statistic title="Sponsor Count" :value="0" />
-      <a-statistic title="Sponsor Amount" :precision="2" :value="0" />
+      <a-skeleton active :loading="isFetchingStatistics" />
+      <div v-if="statisticData">
+        <a-statistic title="View Count" :value="statisticData.view_count" />
+        <a-statistic
+          title="Comment Count"
+          :value="statisticData.comment_count"
+        />
+        <a-statistic
+          title="Sponsor Count"
+          :value="statisticData.sponsor_count"
+        />
+        <a-statistic
+          title="Sponsor Amount (RM)"
+          :precision="2"
+          :value="statisticData.sponsor_amt"
+        />
+      </div>
+      <nuxt-link :to="`/articles/${id}`">
+        <a-button class="mt-16">Go to Article Public Page</a-button>
+      </nuxt-link>
     </a-col>
     <a-col :xs="0" :sm="4" />
   </a-row>
@@ -69,10 +85,24 @@ export default {
       article,
     }
   },
+  data() {
+    return {
+      statisticData: null,
+      isFetchingStatistics: true,
+    }
+  },
   head() {
     return {
       title: 'View ' + this.article.article_title,
     }
+  },
+  async mounted() {
+    this.statisticData = (
+      await this.$axios.get(
+        `/api/user/profile/author/articles/${this.id}/statistics`
+      )
+    ).data
+    this.isFetchingStatistics = false
   },
 }
 </script>
@@ -81,6 +111,10 @@ export default {
 .container {
   .content {
     padding: 16px;
+
+    .cu-date {
+      font-size: 12px;
+    }
 
     .paragraph {
       margin-bottom: 16px;
