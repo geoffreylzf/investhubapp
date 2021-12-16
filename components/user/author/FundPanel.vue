@@ -14,10 +14,10 @@
     />
     <a-button-group>
       <nuxt-link to="/profile/author/withdraws/create">
-        <a-button> Submit New Withdraw </a-button>
+        <a-button icon="plus"> Submit New Withdraw </a-button>
       </nuxt-link>
       <nuxt-link to="/profile/author/withdraws">
-        <a-button> Manage Your Withdraw </a-button>
+        <a-button icon="bars"> Your Withdraw History</a-button>
       </nuxt-link>
     </a-button-group>
   </div>

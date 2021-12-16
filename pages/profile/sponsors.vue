@@ -15,7 +15,7 @@
         </template>
 
         <template #author="{ rowData }">
-          <nuxt-link :to="`/articles/${rowData.author}`" class="text-center">
+          <nuxt-link :to="`/articles/${rowData.author}`">
             {{ rowData.author_first_name }}
           </nuxt-link>
         </template>
