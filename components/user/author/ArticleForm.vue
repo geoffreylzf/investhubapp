@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="note">
+      <div>Note</div>
+      <div>* Paragraph / picture title can be blank</div>
+      <div>
+        * If you are author with less or no followers, it is advise that do not
+        tick "Only your supporter can view"
+      </div>
+      <div>* Please only tick "Publish" if your article is ready to read</div>
+    </div>
     <a-input
       v-model="article.article_title"
       class="input-title"
@@ -12,7 +21,7 @@
     >
       Publish (Everyone can read it)
     </a-checkbox>
-    <a-divider>Paragraphs</a-divider>
+    <a-divider>Paragraphs / Pictures</a-divider>
     <div
       v-for="(para, i) in article.paragraphs"
       :key="i"
@@ -38,7 +47,11 @@
           @click="deleteParagraph(para, i)"
         />
       </div>
-
+      <a-input
+        v-model="para.paragraph_title"
+        placeholder="Title"
+        class="mb-8"
+      />
       <a-textarea
         v-if="para.type === 'text'"
         v-model="para.content"
@@ -78,8 +91,6 @@
         {{ t.topic_name }}
       </a-select-option>
     </a-select>
-    <br />
-    <br />
     <a-select
       v-model="selectedStockCounterList"
       mode="multiple"
@@ -88,6 +99,7 @@
       option-filter-prop="label"
       :filter-option="false"
       show-search
+      class="mt-8"
       @search="fetchStockCounter"
     >
       <template v-if="stockCounter.isFetching" #notFoundContent>
@@ -132,6 +144,7 @@ export default {
           is_supporter_view_only: false,
 
           type: 'text',
+          paragraph_title: '',
           content: '',
           article_img: null,
           article_img_path: null,
@@ -213,6 +226,7 @@ export default {
         is_supporter_view_only: false,
 
         type: 'text',
+        paragraph_title: '',
         content: '',
         article_img: null,
         article_img_path: null,
@@ -224,6 +238,7 @@ export default {
         is_supporter_view_only: false,
 
         type: 'image',
+        paragraph_title: '',
         content: '',
         article_img: null,
         article_img_path: null,
@@ -236,6 +251,7 @@ export default {
         })
         return
       }
+
       if (this.article.paragraphs.length === 0) {
         this.$error({
           title: 'Please enter at least 1 paragraph',
@@ -305,5 +321,11 @@ export default {
       margin-left: auto;
     }
   }
+}
+
+.note {
+  margin-bottom: 16px;
+  color: red;
+  font-size: 12px;
 }
 </style>

@@ -7,7 +7,10 @@
         <nuxt-link :to="'/articles/' + art.id">
           <p class="title">{{ i + 1 }}. {{ art.title }}</p>
         </nuxt-link>
-        <p class="author">{{ art.author_first_name }}. Publish Date</p>
+        <p class="author">
+          {{ art.author_first_name }}.
+          {{ $formatHumanDate(art.publish_datetime) }}
+        </p>
       </div>
     </div>
   </div>

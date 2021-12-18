@@ -13,7 +13,7 @@
             {{
               articleData.author_first_name +
               '. ' +
-              formatHumanDate(articleData.created_at)
+              $formatHumanDate(articleData.publish_datetime)
             }}
           </div>
           <div class="mt-8">
@@ -41,22 +41,11 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   props: {
     articleData: {
       type: Object,
       required: true,
-    },
-  },
-  methods: {
-    formatHumanDate(datetime) {
-      if (datetime) {
-        return this.capitalizeFirstLetter(moment(datetime).fromNow())
-      }
-    },
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1)
     },
   },
 }

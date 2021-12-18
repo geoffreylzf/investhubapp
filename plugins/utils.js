@@ -1,6 +1,7 @@
 // import { saveAs } from 'file-saver'
 
 import Vue from 'vue'
+import moment from 'moment'
 
 // Vue.prototype.$fileSaver = function (response) {
 //   const contentDisposition = response.headers['content-disposition']
@@ -65,4 +66,25 @@ Vue.prototype.$formatInteger = function (
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   })
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+Vue.prototype.$formatHumanDate = function (
+  v,
+  { showBlankAs = '-', showNullAs = '-', uppercaseFirstChar = true } = {}
+) {
+  if (v == null || v === undefined) {
+    return showNullAs
+  }
+  if (v === '') {
+    return showBlankAs
+  }
+
+  if (uppercaseFirstChar) {
+    return capitalizeFirstLetter(moment(v).fromNow())
+  }
+  return moment(v).fromNow()
 }

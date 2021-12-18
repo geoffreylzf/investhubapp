@@ -18,7 +18,12 @@
                 <a-avatar :size="64" :src="aut.img_path" />
                 <div class="author-name">{{ aut.first_name }}</div>
                 <div class="author-date">
-                  Joined {{ formatHumanDate(aut.created_at) }}
+                  Joined
+                  {{
+                    $formatHumanDate(aut.created_at, {
+                      uppercaseFirstChar: false,
+                    })
+                  }}
                 </div>
               </nuxt-link>
               <div class="author-bio">{{ aut.bio }}</div>
@@ -45,7 +50,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import _ from 'lodash'
 export default {
   auth: false,
@@ -89,11 +93,6 @@ export default {
     }, 500),
   },
   methods: {
-    formatHumanDate(datetime) {
-      if (datetime) {
-        return moment(datetime).fromNow()
-      }
-    },
     afterFollow(aut) {
       aut.is_following = true
     },

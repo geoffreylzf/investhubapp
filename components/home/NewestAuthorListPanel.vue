@@ -14,7 +14,10 @@
           <div>
             <div class="name">{{ aut.first_name }}</div>
             <div class="join-date">
-              Joined {{ formatHumanDate(aut.created_at) }}
+              Joined
+              {{
+                $formatHumanDate(aut.created_at, { uppercaseFirstChar: false })
+              }}
             </div>
           </div>
         </div>
@@ -24,7 +27,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   data() {
     return {
@@ -35,13 +37,6 @@ export default {
   async mounted() {
     this.authorList = (await this.$axios.get('/api/home/newest-authors/')).data
     this.isMounting = false
-  },
-  methods: {
-    formatHumanDate(datetime) {
-      if (datetime) {
-        return moment(datetime).fromNow()
-      }
-    },
   },
 }
 </script>

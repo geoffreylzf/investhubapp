@@ -7,12 +7,7 @@
         <a-tag v-if="article.is_publish" color="green"> Publish </a-tag>
         <a-tag v-else color="red"> Not Yet Publish </a-tag>
       </h1>
-      <p class="cu-date">
-        <i>Created at {{ article.created_at }}</i>
-        &nbsp;
-        <i>Last updated at {{ article.updated_at }}</i>
-      </p>
-      <a-button-group>
+      <a-button-group class="mb-16">
         <nuxt-link to="/profile/author/articles">
           <a-button icon="bars"> List All </a-button>
         </nuxt-link>
@@ -20,8 +15,6 @@
           <a-button icon="edit"> Update </a-button>
         </nuxt-link>
       </a-button-group>
-      <br />
-      <br />
       <div
         v-for="(para, i) in article.paragraphs"
         :key="i"
@@ -30,6 +23,7 @@
           'supporter-view': para.is_supporter_view_only,
         }"
       >
+        <h3>{{ para.paragraph_title }}</h3>
         <pre v-if="para.type === 'text'">{{ para.content }}</pre>
         <img v-else-if="para.type === 'image'" :src="para.article_img_path" />
       </div>
@@ -48,6 +42,25 @@
       <a-divider />
     </a-col>
     <a-col :xs="24" :sm="4" class="status">
+      <div class="mb-16">
+        <div class="title">Create At</div>
+        <div class="value">
+          {{ $formatHumanDate(article.created_at) }}
+          <span class="note">({{ article.created_at }})</span>
+        </div>
+        <div class="title">Updated At</div>
+        <div v-if="article.updated_at" class="value">
+          {{ $formatHumanDate(article.updated_at) }}
+          <span class="note">({{ article.updated_at }})</span>
+        </div>
+        <div v-else>-</div>
+        <div class="title">Publish At</div>
+        <div v-if="article.publish_datetime" class="value">
+          {{ $formatHumanDate(article.publish_datetime) }}
+          <span class="note">({{ article.publish_datetime }})</span>
+        </div>
+        <div v-else>-</div>
+      </div>
       <a-skeleton active :loading="isFetchingStatistics" />
       <div v-if="statisticData">
         <a-statistic title="View Count" :value="statisticData.view_count" />
@@ -112,10 +125,6 @@ export default {
   .content {
     padding: 16px;
 
-    .cu-date {
-      font-size: 12px;
-    }
-
     .paragraph {
       margin-bottom: 16px;
 
@@ -138,6 +147,17 @@ export default {
   }
   .status {
     padding: 16px;
+
+    .title {
+      color: darkgray;
+      font-size: 12px;
+    }
+    .value {
+      margin-bottom: 4px;
+    }
+    .note {
+      font-size: 12px;
+    }
   }
 }
 </style>

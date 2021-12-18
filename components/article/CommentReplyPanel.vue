@@ -20,7 +20,7 @@
                   <span class="create-date">
                     <a-tooltip>
                       <template #title>{{ reply.created_at }}</template>
-                      {{ formatHumanDate(reply.created_at) }}
+                      {{ $formatHumanDate(reply.created_at) }}
                     </a-tooltip>
                   </span>
                 </div>
@@ -73,7 +73,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 export default {
   props: {
     articleId: {
@@ -129,14 +128,6 @@ export default {
     },
     onPaginationChange(page, pageSize) {
       this.fetch({ page })
-    },
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1)
-    },
-    formatHumanDate(datetime) {
-      if (datetime) {
-        return this.capitalizeFirstLetter(moment(datetime).fromNow())
-      }
     },
     async refresh() {
       await this.fetch({ page: 1 })

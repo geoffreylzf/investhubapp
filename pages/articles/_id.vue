@@ -6,7 +6,12 @@
           {{ article.article_title }}
         </h1>
         <div class="wrote-date">
-          {{ `Published at ${formatHumanDate(article.created_at)}` }}
+          Published at
+          {{
+            $formatHumanDate(article.publish_datetime, {
+              uppercaseFirstChar: false,
+            })
+          }}.
           {{ `Viewed ${article.view_count} times` }}
         </div>
         <div
@@ -17,6 +22,7 @@
             'supporter-view': para.is_supporter_view_only,
           }"
         >
+          <h3>{{ para.paragraph_title }}</h3>
           <div v-if="para.type === 'text'">
             <pre v-if="para.content">{{ para.content }}</pre>
             <div v-else-if="para.is_supporter_view_only" class="hidden-content">
@@ -150,7 +156,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   auth: false,
   async asyncData({ params, $axios }) {
@@ -198,11 +203,6 @@ export default {
     await this.$axios.post(`/api/articles/${this.id}/view/`)
   },
   methods: {
-    formatHumanDate(datetime) {
-      if (datetime) {
-        return moment(datetime).fromNow()
-      }
-    },
     showSponsorModal(type) {
       if (!this.$auth.loggedIn) {
         this.$router.push('/login')

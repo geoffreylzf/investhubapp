@@ -26,7 +26,10 @@
           {{ author.bio }}
         </div>
         <div class="join-date">
-          Joined {{ formatHumanDate(author.created_at) }}
+          Joined
+          {{
+            $formatHumanDate(author.created_at, { uppercaseFirstChar: false })
+          }}
         </div>
         <div class="follower">
           <b>{{ author.article_count }}</b> articles
@@ -45,7 +48,7 @@
             <div class="article-ctn">
               <div class="title">{{ art.article_title }}</div>
               <div class="wrote-date">
-                {{ formatHumanDate(art.created_at) }}
+                {{ $formatHumanDate(art.publish_datetime) }}
               </div>
               <div class="mt-4">
                 <a-tag v-for="t in art.topics" :key="t.id" color="blue">
@@ -82,7 +85,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   auth: false,
   async asyncData({ params, $axios }) {
@@ -109,14 +111,6 @@ export default {
     }
   },
   methods: {
-    formatHumanDate(datetime) {
-      if (datetime) {
-        return this.capitalizeFirstLetter(moment(datetime).fromNow())
-      }
-    },
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1)
-    },
     afterFollow() {
       this.author.is_following = true
       this.author.follower_count++
