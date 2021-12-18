@@ -36,13 +36,20 @@
         </a-col>
       </a-row>
     </div>
-    <div class="content">
-      <ul>
-        <li>Newest Articles</li>
-        <li>Newest Authors</li>
-        <li>Top article of the Month</li>
-      </ul>
-    </div>
+    <UtilAdsContainer>
+      <a-row>
+        <a-col :md="24" :lg="16" class="timeline">
+          <HomeTimeline />
+        </a-col>
+        <a-col :md="24" :lg="8" class="side">
+          <HomeTrendArticleListPanel class="mb-16" />
+          <HomeNewestAuthorListPanel class="mb-16" />
+          <HomeNewestArticleListPanel class="mb-16" />
+        </a-col>
+      </a-row>
+    </UtilAdsContainer>
+    <a-divider />
+    <HomeDisclaimerSection />
   </div>
 </template>
 
@@ -58,6 +65,7 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser']),
   },
+  mounted() {},
   methods: {
     registerAuthor() {
       if (!this.$auth.loggedIn) {
@@ -95,7 +103,10 @@ export default {
     margin-bottom: 8px;
   }
 }
-.content {
-  margin: 16px;
+.timeline {
+  padding: 16px;
+}
+.side {
+  padding: 16px;
 }
 </style>

@@ -6,7 +6,7 @@
           {{ article.article_title }}
         </h1>
         <div class="wrote-date">
-          {{ `Wrote at ${formatHumanDate(article.created_at)}` }}
+          {{ `Published at ${formatHumanDate(article.created_at)}` }}
           {{ `Viewed ${article.view_count} times` }}
         </div>
         <div

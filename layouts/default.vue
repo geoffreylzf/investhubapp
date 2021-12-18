@@ -34,7 +34,7 @@
         <div>
           Copyright
           <a-icon type="copyright" /> {{ new Date().getFullYear() }}
-          <span>InvestHub.org. All Rights Reserved</span>
+          <span>investhub.org. All Rights Reserved</span>
         </div>
       </div>
     </a-layout-footer>
@@ -63,6 +63,7 @@ export default {
         okText: 'Logout',
         onOk: () => {
           this.$auth.logout()
+          this.$nuxt.refresh()
         },
         onCancel() {},
       })

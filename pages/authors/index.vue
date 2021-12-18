@@ -23,7 +23,7 @@
               </nuxt-link>
               <div class="author-bio">{{ aut.bio }}</div>
               <div class="author-article">
-                Wrote {{ aut.article_count }} articles
+                Published {{ aut.article_count }} articles
               </div>
               <AuthorFollowButton
                 :author-id="aut.id"

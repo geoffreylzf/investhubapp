@@ -111,8 +111,11 @@ export default {
   methods: {
     formatHumanDate(datetime) {
       if (datetime) {
-        return moment(datetime).fromNow()
+        return this.capitalizeFirstLetter(moment(datetime).fromNow())
       }
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
     },
     afterFollow() {
       this.author.is_following = true
