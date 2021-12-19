@@ -14,9 +14,11 @@
           <div>
             <div class="name">{{ aut.first_name }}</div>
             <div class="join-date">
-              Joined
+              First article published at
               {{
-                $formatHumanDate(aut.created_at, { uppercaseFirstChar: false })
+                $formatHumanDate(aut.first_article_publish_datetime, {
+                  uppercaseFirstChar: false,
+                })
               }}
             </div>
           </div>

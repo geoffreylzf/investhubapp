@@ -30,13 +30,12 @@
       <Nuxt />
     </a-layout-content>
     <a-layout-footer>
-      <div class="footer">
-        <div>
-          Copyright
-          <a-icon type="copyright" /> {{ new Date().getFullYear() }}
-          <span>investhub.org. All Rights Reserved</span>
-        </div>
+      <div class="mb-4">
+        Copyright
+        <a-icon type="copyright" /> {{ new Date().getFullYear() }}
+        <span>investhub.org. All Rights Reserved</span>
       </div>
+      <nuxt-link to="/contact-us">Contact Us</nuxt-link>
     </a-layout-footer>
   </a-layout>
 </template>
@@ -80,7 +79,7 @@ export default {
 }
 .ant-layout-content {
   background: white;
-  min-height: calc(100vh - 84px);
+  min-height: calc(100vh - 48px - 56px);
 }
 .header-right {
   height: 48px;
@@ -105,10 +104,7 @@ export default {
   cursor: pointer;
 }
 .ant-layout-footer {
-  line-height: 36px;
-  padding: 0;
-}
-.footer {
+  padding: 8px;
   text-align: center;
   font-size: 12px;
 }
