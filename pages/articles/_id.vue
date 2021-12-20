@@ -22,20 +22,11 @@
             'supporter-view': para.is_supporter_view_only,
           }"
         >
-          <h3>{{ para.paragraph_title }}</h3>
-          <div v-if="para.type === 'text'">
-            <pre v-if="para.content">{{ para.content }}</pre>
-            <div v-else-if="para.is_supporter_view_only" class="hidden-content">
-              <a-icon type="picture" />
-              <span>Supporter Content</span>
-            </div>
-          </div>
-          <div v-else-if="para.type === 'image'">
-            <img v-if="para.article_img_path" :src="para.article_img_path" />
-            <div v-else-if="para.is_supporter_view_only" class="hidden-content">
-              <a-icon type="align-left" />
-              <span>Supporter Content</span>
-            </div>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div v-if="para.content" class="vue-html" v-html="para.content"></div>
+          <div v-else-if="para.is_supporter_view_only" class="hidden-content">
+            <a-icon type="picture" />
+            <span>Supporter Content</span>
           </div>
         </div>
         <div class="mt-8">
@@ -80,20 +71,23 @@
         </div>
 
         <div>
-          <div class="font-weight-bold">Comments</div>
-          <a-textarea
-            v-model="newComment"
-            class="mb-12"
-            auto-size
-            placeholder="Enter comment"
-            @focus="checkAuthBeforeComment()"
-          />
-          <div class="text-right">
-            <a-button
-              :disabled="newComment.length === 0"
-              @click="postComment()"
-            >
-              Comment
+          <div v-if="isEnteringComment">
+            <UtilWysiwygEditor v-model="newComment" class="mt-8" is-basic />
+            <div class="text-right mt-8">
+              <a-button @click="cancelComment()"> Cancel </a-button>
+
+              <a-button
+                :disabled="newComment.length === 0"
+                icon="save"
+                @click="postComment()"
+              >
+                Comment
+              </a-button>
+            </div>
+          </div>
+          <div v-else class="text-right">
+            <a-button icon="message" @click="preEnterComment()">
+              Post a Comment
             </a-button>
           </div>
         </div>
@@ -178,6 +172,7 @@ export default {
         type: null,
       },
 
+      isEnteringComment: false,
       newComment: '',
     }
   },
@@ -225,10 +220,15 @@ export default {
     afterUnfollow() {
       this.author.is_following = false
     },
-    checkAuthBeforeComment() {
+    preEnterComment() {
       if (!this.$auth.loggedIn) {
         this.$router.push('/login')
       }
+      this.isEnteringComment = true
+    },
+    cancelComment() {
+      this.newComment = ''
+      this.isEnteringComment = false
     },
     async postComment() {
       const comment = this.newComment

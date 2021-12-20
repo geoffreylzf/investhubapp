@@ -54,10 +54,10 @@
                   </div>
                   <div class="content">
                     <div v-if="comment.isEdit">
-                      <a-textarea
+                      <UtilWysiwygEditor
                         v-model="comment.tempContent"
                         class="mt-4 mb-4"
-                        auto-size
+                        is-basic
                       />
                       <div class="text-right">
                         <a-button @click="cancelEditComment(comment)">
@@ -71,7 +71,8 @@
                         </a-button>
                       </div>
                     </div>
-                    <pre v-else>{{ comment.content }}</pre>
+                    <!-- eslint-disable-next-line vue/no-v-html -->
+                    <div v-else class="vue-html" v-html="comment.content"></div>
                   </div>
                   <div class="footer">
                     <span
@@ -262,12 +263,11 @@ export default {
 table {
   border-collapse: collapse;
 
-  td {
-    border: 1px solid #e8e8e8;
-  }
-
   td:first-child {
     vertical-align: top;
+    border-top: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
 
     .ant-avatar {
       margin: 8px;
@@ -275,6 +275,9 @@ table {
   }
 
   td:nth-child(2) {
+    border-top: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
     width: 100%;
     .comment-ctn {
       padding: 4px 8px;

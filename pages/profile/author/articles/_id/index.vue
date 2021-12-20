@@ -23,9 +23,8 @@
           'supporter-view': para.is_supporter_view_only,
         }"
       >
-        <h3>{{ para.paragraph_title }}</h3>
-        <pre v-if="para.type === 'text'">{{ para.content }}</pre>
-        <img v-else-if="para.type === 'image'" :src="para.article_img_path" />
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="vue-html" v-html="para.content"></div>
       </div>
       <div class="mt-8">
         <a-tag v-for="t in article.topics" :key="t.id" color="blue">

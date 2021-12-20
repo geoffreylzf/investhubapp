@@ -2,7 +2,6 @@
   <div>
     <div class="note">
       <div>Note</div>
-      <div>* Paragraph / picture title can be blank</div>
       <div>
         * If you are author with less or no followers, it is advise that do not
         tick "Only your supporter can view"
@@ -21,7 +20,7 @@
     >
       Publish (Everyone can read it)
     </a-checkbox>
-    <a-divider>Paragraphs / Pictures</a-divider>
+    <div class="divider" />
     <div
       v-for="(para, i) in article.paragraphs"
       :key="i"
@@ -47,40 +46,21 @@
           @click="deleteParagraph(para, i)"
         />
       </div>
-      <a-input
-        v-model="para.paragraph_title"
-        placeholder="Title"
-        class="mb-8"
-      />
-      <a-textarea
-        v-if="para.type === 'text'"
+      <UtilWysiwygEditor
         v-model="para.content"
-        auto-size
+        class="mt-8"
+        img-upload-url="/api/user/profile/author/article-imgs/"
       />
-
-      <UserAuthorArticleFormImgUploader
-        v-else-if="para.type === 'image'"
-        :article-img="para.article_img"
-        :article-img-path="para.article_img_path"
-        @uploadArticleImg="para.article_img = $event"
-        @uploadArticleImgPath="para.article_img_path = $event"
-      />
+      <div class="divider" />
     </div>
-    <a-divider />
-    <a-button-group>
-      <a-button icon="file-text" @click="addParagraph()">
-        Add Paragraph
-      </a-button>
-      <a-button icon="file-image" @click="addImage()"> Add Picture </a-button>
-    </a-button-group>
-    <br />
-    <br />
+    <a-button icon="plus" @click="addParagraph()"> Add Paragraph </a-button>
     <a-select
       v-model="selectedTopicList"
       mode="multiple"
       style="width: 100%"
       placeholder="Topic"
       option-filter-prop="label"
+      class="mt-8"
     >
       <a-select-option
         v-for="t in topicList"
@@ -142,12 +122,7 @@ export default {
         {
           order: 1,
           is_supporter_view_only: false,
-
-          type: 'text',
-          paragraph_title: '',
           content: '',
-          article_img: null,
-          article_img_path: null,
         },
       ],
       topics: [],
@@ -224,24 +199,7 @@ export default {
       this.article.paragraphs.push({
         order: this.getParagraphNewOrder(),
         is_supporter_view_only: false,
-
-        type: 'text',
-        paragraph_title: '',
         content: '',
-        article_img: null,
-        article_img_path: null,
-      })
-    },
-    addImage() {
-      this.article.paragraphs.push({
-        order: this.getParagraphNewOrder(),
-        is_supporter_view_only: false,
-
-        type: 'image',
-        paragraph_title: '',
-        content: '',
-        article_img: null,
-        article_img_path: null,
       })
     },
     validate() {
@@ -308,8 +266,6 @@ export default {
 }
 
 .para-container {
-  background: whitesmoke;
-  padding: 16px;
   margin-bottom: 8px;
 
   .para-option-container {
@@ -321,6 +277,13 @@ export default {
       margin-left: auto;
     }
   }
+}
+
+.divider {
+  margin: 24px 0;
+  height: 8px;
+  background: darkslategray;
+  width: 100%;
 }
 
 .note {
