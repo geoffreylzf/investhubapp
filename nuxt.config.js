@@ -38,7 +38,7 @@ export default {
     '@nuxtjs/svg',
   ],
 
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
 
   axios: {
     baseURL: process.env.API_URL || undefined,
@@ -47,16 +47,31 @@ export default {
   auth: {
     strategies: {
       local: {
+        scheme: 'refresh',
+        token: {
+          property: 'access',
+          maxAge: 60 * 5, // 5 minutes
+        },
+        refreshToken: {
+          property: 'refresh',
+          data: 'refresh',
+          maxAge: 60 * 60 * 24, // 1 day
+        },
+        user: {
+          property: 'profile',
+        },
         endpoints: {
           login: {
             url: '/api/auth/login/',
             method: 'post',
-            propertyName: 'access',
+          },
+          refresh: {
+            url: '/api/auth/token/refresh/',
+            method: 'post',
           },
           user: {
             url: '/api/user/profile/',
             method: 'get',
-            propertyName: 'profile',
           },
           logout: false,
         },
