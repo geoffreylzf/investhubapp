@@ -10,8 +10,8 @@
             <div class="reply-ctn">
               <div class="header">
                 <div class="header-left">
-                  <span class="user-firstname">
-                    {{ reply.user_first_name }}
+                  <span class="user-displayname">
+                    {{ reply.user_display_name }}
                     <a-tooltip v-if="articleAuthorUserId === reply.user">
                       <template #title>This article's author </template>
                       <a-icon class="author-icon" type="user" />
@@ -196,7 +196,7 @@ export default {
             display: flex;
             justify-content: space-between;
 
-            .user-firstname {
+            .user-displayname {
               margin-right: 4px;
               font-weight: bold;
               font-size: 13px;

@@ -16,7 +16,7 @@
             <a-card class="author-card">
               <nuxt-link :to="'/authors/' + aut.id" class="link">
                 <a-avatar :size="64" :src="aut.img_path" />
-                <div class="author-name">{{ aut.first_name }}</div>
+                <div class="author-name">{{ aut.display_name }}</div>
                 <div class="author-date">
                   Joined
                   {{
@@ -80,7 +80,7 @@ export default {
       const data = (
         await this.$axios.get('/api/authors/', {
           params: {
-            filter: { first_name: this.searchText },
+            filter: { display_name: this.searchText },
           },
         })
       ).data
@@ -113,7 +113,7 @@ export default {
       const data = (
         await this.$axios.get('/api/authors/', {
           params: {
-            filter: { first_name: this.searchText },
+            filter: { display_name: this.searchText },
             page: this.currentPage,
           },
         })

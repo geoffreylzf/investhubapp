@@ -49,7 +49,6 @@
       </a-row>
     </UtilAdsContainer>
     <a-divider />
-    <HomeDisclaimerSection />
   </div>
 </template>
 

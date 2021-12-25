@@ -36,6 +36,8 @@
         <span>investhub.org. All Rights Reserved</span>
       </div>
       <nuxt-link to="/contact-us">Contact Us</nuxt-link>
+      <a-divider type="vertical" />
+      <nuxt-link to="/disclaimer">Disclaimer</nuxt-link>
     </a-layout-footer>
   </a-layout>
 </template>

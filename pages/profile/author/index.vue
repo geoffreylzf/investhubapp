@@ -42,6 +42,13 @@
           <a-input v-decorator="['mobile_no']" :max-length="50" />
         </a-form-item>
       </a-form>
+      <div class="note">
+        <div>Note</div>
+        <div>
+          1. Bank Info and "Mobile No" are not required until you need to make
+          withdraw
+        </div>
+      </div>
       <a-button
         block
         type="primary"
@@ -136,3 +143,10 @@ export default {
   },
 }
 </script>
+<style lang="less" scoped>
+.note {
+  margin-bottom: 16px;
+  color: red;
+  font-size: 12px;
+}
+</style>

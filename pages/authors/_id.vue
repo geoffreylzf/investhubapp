@@ -11,7 +11,7 @@
         </div>
         <div class="name">
           <div>
-            {{ author.first_name + ' ' + author.last_name }}
+            {{ author.display_name }}
           </div>
           <div>
             <AuthorFollowButton
@@ -107,7 +107,7 @@ export default {
   },
   head() {
     return {
-      title: this.author.first_name,
+      title: this.author.display_name,
     }
   },
   methods: {

@@ -11,7 +11,7 @@
           <div class="font-weight-bold">{{ articleData.article_title }}</div>
           <div class="art-ctn-desc">
             {{
-              articleData.author_first_name +
+              articleData.author_display_name +
               '. ' +
               $formatHumanDate(articleData.publish_datetime)
             }}

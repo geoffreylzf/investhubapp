@@ -12,7 +12,7 @@
         <div class="author">
           <a-avatar class="avatar" :size="48" :src="aut.img_path" />
           <div>
-            <div class="name">{{ aut.first_name }}</div>
+            <div class="name">{{ aut.display_name }}</div>
             <div class="join-date">
               First article published at
               {{

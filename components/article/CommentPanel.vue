@@ -22,8 +22,8 @@
                 <div class="comment-ctn">
                   <div class="header">
                     <div class="header-left">
-                      <span class="user-firstname">
-                        {{ comment.user_first_name }}
+                      <span class="user-displayname">
+                        {{ comment.user_display_name }}
                         <a-tooltip v-if="articleAuthorUserId === comment.user">
                           <template #title>This article's author </template>
                           <a-icon class="author-icon" type="user" />
@@ -285,7 +285,7 @@ table {
         display: flex;
         justify-content: space-between;
 
-        .user-firstname {
+        .user-displayname {
           margin-right: 4px;
           font-weight: bold;
 

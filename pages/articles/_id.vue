@@ -47,19 +47,25 @@
         <div class="sponsor">
           <a-divider />
           <div>
+            Please read <nuxt-link to="/disclaimer">disclaimer</nuxt-link> first
+            before you perform any related activity after reading this article.
+          </div>
+          <div>
             If you manage to get a nice profit from reading this article, why
-            don't you sponsor a bit to support <b>{{ author.first_name }}</b>
+            don't you sponsor a bit to support <b>{{ author.display_name }}</b>
+            .
           </div>
           <div class="mb-4">
             如果您通过阅读这篇文章获得了不错的收益，为什么不赞助一点来支持
-            <b>{{ author.first_name }}</b>
+            <b>{{ author.display_name }}</b>
+            .
           </div>
           <SponsorPaypalButton @click="showSponsorModal('paypal')" />
           <SponsorAmountModal
             :show="sponsorModal.isShow"
             :payment-type="sponsorModal.type"
             :article-id="id"
-            :author-name="author.first_name"
+            :author-name="author.display_name"
             @cancel="sponsorModal.isShow = false"
             @success="sponsorSuccess()"
           />
@@ -103,7 +109,7 @@
           <div class="text-center">
             <nuxt-link :to="'/authors/' + author.id" class="link">
               <a-avatar :size="64" :src="author.img_path" />
-              <div class="name">{{ author.first_name }}</div>
+              <div class="name">{{ author.display_name }}</div>
             </nuxt-link>
             <div class="bio">{{ author.bio }}</div>
             <AuthorFollowButton
@@ -116,7 +122,7 @@
         </a-card>
 
         <div v-if="author.current_user_support.is_support" class="supporter">
-          You are supporter of <b>{{ author.first_name }}</b>
+          You are supporter of <b>{{ author.display_name }}</b>
           <table>
             <tbody>
               <tr>
@@ -178,7 +184,7 @@ export default {
   },
   head() {
     return {
-      title: this.article.article_title,
+      title: '[' + this.author.display_name + '] ' + this.article.article_title,
     }
   },
   async mounted() {

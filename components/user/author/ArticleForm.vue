@@ -3,10 +3,10 @@
     <div class="note">
       <div>Note</div>
       <div>
-        * If you are author with less or no followers, it is advise that do not
+        1. If you are author with less or no followers, it is advise that do not
         tick "Only your supporter can view"
       </div>
-      <div>* Please only tick "Publish" if your article is ready to read</div>
+      <div>2. Please only tick "Publish" if your article is ready to read</div>
     </div>
     <a-input
       v-model="article.article_title"
