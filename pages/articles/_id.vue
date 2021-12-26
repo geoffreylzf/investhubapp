@@ -46,7 +46,7 @@
 
         <div class="sponsor">
           <a-divider />
-          <div>
+          <div class="disclaimer">
             Please read <nuxt-link to="/disclaimer">disclaimer</nuxt-link> first
             before you perform any related activity after reading this article.
           </div>
@@ -299,6 +299,9 @@ export default {
   }
 
   .sponsor {
+    .disclaimer {
+      font-size: 12px;
+    }
     .note {
       font-size: 12px;
       color: rebeccapurple;
