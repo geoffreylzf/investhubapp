@@ -76,7 +76,23 @@ export default {
           logout: false,
         },
       },
+      facebook: {
+        scope: ['public_profile', 'email'],
+        clientId: process.env.FACEBOOK_CLIENT_ID,
+        responseType: 'code',
+        endpoints: {
+          authorization: 'https://www.facebook.com/v12.0/dialog/oauth',
+          token: (process.env.API_URL || '') + '/api/auth/login/facebook/',
+        },
+      },
     },
+    cookie: {
+      options: {
+        secure: process.env.NODE_ENV === 'production', // Enable in Prod only!
+        sameSite: 'lax',
+      },
+    },
+    localStorage: false,
     redirect: {
       login: '/login',
       logout: '/',

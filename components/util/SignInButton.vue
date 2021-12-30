@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     signIn() {
-      console.log('signin')
+      this.$emit('click')
     },
   },
 }

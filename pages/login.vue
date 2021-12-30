@@ -1,64 +1,65 @@
 <template>
   <div class="container">
     <div class="main">
-      <a-form :form="form" class="form-login" @submit.prevent="handleSubmit">
-        <div class="form-login__label">
-          <a href="#"> Enter username and password to login </a>
-        </div>
-        <a-form-item>
-          <a-input
-            v-decorator="[
-              'email',
-              {
-                rules: [{ required: true, message: 'Please enter email' }],
-              },
-            ]"
-            size="large"
-            type="email"
-            placeholder="Email"
-          >
-            <a-icon
-              slot="prefix"
-              :style="{ color: 'rgba(0,0,0,.25)' }"
-              type="mail"
-            />
-          </a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-input
-            v-decorator="[
-              'password',
-              {
-                rules: [{ required: true, message: 'Please enter password' }],
-              },
-            ]"
-            size="large"
-            type="password"
-            autocomplete="false"
-            placeholder="Password"
-          >
-            <a-icon
-              slot="prefix"
-              :style="{ color: 'rgba(0,0,0,.25)' }"
-              type="lock"
-            />
-          </a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-button
-            :loading="isLoading"
-            :disabled="isLoading"
-            size="large"
-            type="primary"
-            html-type="submit"
-            class="form-login__button"
-          >
-            Login
-          </a-button>
-        </a-form-item>
-      </a-form>
-      <UtilSignInButton type="google" />
-      <UtilSignInButton type="facebook" />
+      <a-spin :spinning="isNotMount || isLoading">
+        <a-form :form="form" class="form-login" @submit.prevent="handleSubmit">
+          <div class="form-login__label">
+            <a href="#"> Enter username and password to login </a>
+          </div>
+          <a-form-item>
+            <a-input
+              v-decorator="[
+                'email',
+                {
+                  rules: [{ required: true, message: 'Please enter email' }],
+                },
+              ]"
+              size="large"
+              type="email"
+              placeholder="Email"
+            >
+              <a-icon
+                slot="prefix"
+                :style="{ color: 'rgba(0,0,0,.25)' }"
+                type="mail"
+              />
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-input
+              v-decorator="[
+                'password',
+                {
+                  rules: [{ required: true, message: 'Please enter password' }],
+                },
+              ]"
+              size="large"
+              type="password"
+              autocomplete="false"
+              placeholder="Password"
+            >
+              <a-icon
+                slot="prefix"
+                :style="{ color: 'rgba(0,0,0,.25)' }"
+                type="lock"
+              />
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-button
+              :disabled="isLoading"
+              size="large"
+              type="primary"
+              html-type="submit"
+              class="form-login__button"
+            >
+              Login
+            </a-button>
+          </a-form-item>
+        </a-form>
+        <UtilSignInButton type="google" />
+        <UtilSignInButton type="facebook" @click="loginFacebook()" />
+      </a-spin>
     </div>
   </div>
 </template>
@@ -69,11 +70,24 @@ export default {
     return {
       form: this.$form.createForm(this),
       isLoading: false,
+      isNotMount: true,
     }
   },
   head() {
     return {
       title: 'Login',
+    }
+  },
+  mounted() {
+    this.isNotMount = false
+    const code = this.$route.query.code
+    const strategy = this.$auth.$state.strategy
+
+    if (code && strategy) {
+      this.login({
+        provider: strategy,
+        code,
+      })
     }
   },
   methods: {
@@ -92,26 +106,18 @@ export default {
             data: v,
           })
           .then((r) => {
-            this.$router.back()
-            this.$notification.success({
-              message: 'Welcome Back',
-            })
+            // this.$router.back()
           })
           .catch((e) => {
-            let message = e.toString()
-            if (e.response) {
-              if (e.response.data) {
-                message = e.response.data.detail
-              } else {
-                message = e.response.data
-              }
-            }
-            this.$message.error(message)
+            this.$responseError(e.response)
           })
           .finally(() => {
             this.isLoading = false
           })
       }, 500)
+    },
+    loginFacebook(v) {
+      this.$auth.loginWith('facebook')
     },
   },
 }
