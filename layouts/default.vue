@@ -62,9 +62,9 @@ export default {
         title: 'Logout?',
         content: 'Confirm to logout?',
         okText: 'Logout',
-        onOk: () => {
-          this.$auth.logout()
-          this.$nuxt.refresh()
+        onOk: async () => {
+          await this.$auth.logout()
+          window.location.reload(true)
         },
         onCancel() {},
       })

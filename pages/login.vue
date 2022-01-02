@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <client-only>
     <div class="main">
       <a-spin :spinning="isNotMount || isLoading">
         <a-form :form="form" class="form-login" @submit.prevent="handleSubmit">
@@ -57,11 +57,15 @@
             </a-button>
           </a-form-item>
         </a-form>
-        <UtilSignInButton type="google" />
+        <UtilSignInButton type="google" @click="loginGoogle()" />
         <UtilSignInButton type="facebook" @click="loginFacebook()" />
+        <div v-if="redirectUri" class="redirect">
+          After login will redirect to
+          <nuxt-link :to="redirectUri"> here </nuxt-link>
+        </div>
       </a-spin>
     </div>
-  </div>
+  </client-only>
 </template>
 
 <script>
@@ -78,6 +82,11 @@ export default {
       title: 'Login',
     }
   },
+  computed: {
+    redirectUri() {
+      return this.$store.state.loginData.redirectUri
+    },
+  },
   mounted() {
     this.isNotMount = false
     const code = this.$route.query.code
@@ -91,12 +100,27 @@ export default {
     }
   },
   methods: {
+    savePreRouteInVuex() {
+      const preRoute = this.$nuxt.context.from
+      if (preRoute) {
+        this.$store.commit('loginData/set', preRoute.fullPath)
+      }
+    },
     handleSubmit(e) {
+      this.savePreRouteInVuex()
       this.form.validateFields((e, v) => {
         if (!e) {
           this.login(v)
         }
       })
+    },
+    loginFacebook() {
+      this.savePreRouteInVuex()
+      this.$auth.loginWith('facebook')
+    },
+    loginGoogle() {
+      this.savePreRouteInVuex()
+      this.$auth.loginWith('google')
     },
     login(v) {
       this.isLoading = true
@@ -106,7 +130,10 @@ export default {
             data: v,
           })
           .then((r) => {
-            // this.$router.back()
+            if (this.redirectUri) {
+              this.$router.push(this.redirectUri)
+              this.$store.commit('loginData/reset')
+            }
           })
           .catch((e) => {
             this.$responseError(e.response)
@@ -115,9 +142,6 @@ export default {
             this.isLoading = false
           })
       }, 500)
-    },
-    loginFacebook(v) {
-      this.$auth.loginWith('facebook')
     },
   },
 }
@@ -140,6 +164,10 @@ export default {
       height: 40px;
       width: 100%;
     }
+  }
+  .redirect {
+    margin-top: 8px;
+    font-size: 12px;
   }
 }
 </style>

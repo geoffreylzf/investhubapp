@@ -28,7 +28,12 @@ export default {
 
   css: ['@/assets/less/app.less'],
 
-  plugins: ['@/plugins/antd-ui', '@/plugins/response', '@/plugins/utils'],
+  plugins: [
+    '@/plugins/antd-ui',
+    '@/plugins/response',
+    '@/plugins/utils',
+    '@/plugins/persisted-state.client.js',
+  ],
 
   components: true,
 
@@ -38,7 +43,11 @@ export default {
     '@nuxtjs/svg',
   ],
 
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/google-adsense'],
+
+  router: {
+    middleware: ['auth'],
+  },
 
   axios: {
     baseURL: process.env.API_URL || undefined,
@@ -82,7 +91,16 @@ export default {
         responseType: 'code',
         endpoints: {
           authorization: 'https://www.facebook.com/v12.0/dialog/oauth',
-          token: (process.env.API_URL || '') + '/api/auth/login/facebook/',
+          token: false,
+        },
+      },
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        responseType: 'code',
+        codeChallengeMethod: '',
+        endpoints: {
+          authorization: 'https://accounts.google.com/o/oauth2/v2/auth',
+          token: false,
         },
       },
     },
@@ -97,11 +115,15 @@ export default {
       login: '/login',
       logout: '/',
       callback: '/login',
-      home: '/',
+      home: false,
     },
   },
-  router: {
-    middleware: ['auth'],
+
+  'google-adsense': {
+    id: process.env.GOOGLE_ADSENSE_ID,
+    onPageLoad: false,
+    pageLevelAds: false,
+    tag: 'GoogleAds',
   },
 
   build: {
