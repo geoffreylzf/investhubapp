@@ -28,12 +28,7 @@ export default {
 
   css: ['@/assets/less/app.less'],
 
-  plugins: [
-    '@/plugins/antd-ui',
-    '@/plugins/response',
-    '@/plugins/utils',
-    '@/plugins/persisted-state.client.js',
-  ],
+  plugins: ['@/plugins/antd-ui', '@/plugins/response', '@/plugins/utils'],
 
   components: true,
 
@@ -43,7 +38,12 @@ export default {
     '@nuxtjs/svg',
   ],
 
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/google-adsense'],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
+    // TODO Ads
+    // '@nuxtjs/google-adsense'
+  ],
 
   router: {
     middleware: ['auth'],
@@ -119,12 +119,13 @@ export default {
     },
   },
 
-  'google-adsense': {
-    id: process.env.GOOGLE_ADSENSE_ID,
-    onPageLoad: false,
-    pageLevelAds: false,
-    tag: 'GoogleAds',
-  },
+  // TODO Ads
+  // 'google-adsense': {
+  //   id: process.env.GOOGLE_ADSENSE_ID,
+  //   onPageLoad: false,
+  //   pageLevelAds: false,
+  //   tag: 'GoogleAds',
+  // },
 
   build: {
     extend(config, ctx) {

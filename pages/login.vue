@@ -59,10 +59,6 @@
         </a-form>
         <UtilSignInButton type="google" @click="loginGoogle()" />
         <UtilSignInButton type="facebook" @click="loginFacebook()" />
-        <div v-if="redirectUri" class="redirect">
-          After login will redirect to
-          <nuxt-link :to="redirectUri"> here </nuxt-link>
-        </div>
       </a-spin>
     </div>
   </client-only>
@@ -82,11 +78,6 @@ export default {
       title: 'Login',
     }
   },
-  computed: {
-    redirectUri() {
-      return this.$store.state.loginData.redirectUri
-    },
-  },
   mounted() {
     this.isNotMount = false
     const code = this.$route.query.code
@@ -103,7 +94,7 @@ export default {
     savePreRouteInVuex() {
       const preRoute = this.$nuxt.context.from
       if (preRoute) {
-        this.$store.commit('loginData/set', preRoute.fullPath)
+        localStorage.setItem('login_redirect_uri', preRoute.fullPath)
       }
     },
     handleSubmit(e) {
@@ -130,9 +121,12 @@ export default {
             data: v,
           })
           .then((r) => {
-            if (this.redirectUri) {
-              this.$router.push(this.redirectUri)
-              this.$store.commit('loginData/reset')
+            const loginRedirectUri = localStorage.getItem('login_redirect_uri')
+            if (loginRedirectUri) {
+              this.$router.push(loginRedirectUri)
+              localStorage.removeItem('login_redirect_uri')
+            } else {
+              this.$router.push('/')
             }
           })
           .catch((e) => {
